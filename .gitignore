@@ -1,0 +1,16 @@
+/logs
+paypal/
+Session/
+stripe-php-master/
+system/
+tests/
+img/
+assets/*
+!assets/js
+!assets/css
+assets/js/tinymce
+assets/js/ckeditor_wiris
+assets/js/lib
+assets/js/jquery.calculator
+assets/js/literallycanvas
+assets/js/wPaint
