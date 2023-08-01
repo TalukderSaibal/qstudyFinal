@@ -217,7 +217,7 @@
                 <label for="formInputButton1">SL
 
                   <select name="serial" id="formInputButton1" class="form-control" style="height: 31px; margin-left: 4px;">
-                    <?php for ($i = 1; $i < 100; $i++) { ?>
+                    <?php for ($i = 1; $i < 300; $i++) { ?>
                       <option value="<?= $i ?>" <?php if(!empty($module_cre_info['serial'])){ if($module_cre_info['serial']==$i){echo "selected";}}else{ if($module_info['serial']==$i){echo "selected";}} ?>><?= $i ?></option>
                     <?php } ?>
                   </select>

@@ -659,7 +659,7 @@ $question_instruct_id = $question_info_s[0]['id'];
                                                                         $question_instruct_vid = isset($ind['question_video']) ? json_decode($ind['question_video']) : '';
                                                                         ?>
                                                                         <?php if (isset($question_instruct_vid[0]) && $question_instruct_vid[0] != null) { ?>
-                                                                            <a onclick="showQuestionVideo(<?php echo $i; ?>)" class="question_video_class" style="display: inline-block;"><img src="http://q-study.com/assets/ckeditor/plugins/svideo/icons/svideo.png"></a>
+                                                                            <a onclick="showQuestionVideo(<?php echo $i; ?>)" class="question_video_class" style="display: inline-block;">AMAMAMAMA<img src="http://q-study.com/assets/ckeditor/plugins/svideo/icons/svideo.png"></a>
                                                                         <?php } ?>
                                                                     </div>
                                                                 </td>

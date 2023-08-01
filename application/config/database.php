@@ -76,21 +76,21 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	
+
 	// 'username' => 'qstudy_usr',
 	// 'password' => 'vWsSS0Twb7b0h7LQ',
 	// 'database' => 'qstudy',
-	
+
 	'username' => 'root',
-	'password' => 'triadpass',
+	'password' => '',
 	'database' => 'qstudy',
-	
+
 // 	'username' => 'matchtherssoftwa_qstudyNew',
 // 	'password' => 'matchtherssoftwa_qstudyNew',
 // 	'database' => 'matchtherssoftwa_qstudyNew',
-	
-	
-	
+
+
+
 // 	'username' => 'root',
 // 	'password' => '',
 // 	'database' => 'qstudy',
