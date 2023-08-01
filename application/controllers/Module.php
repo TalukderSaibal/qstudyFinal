@@ -81,8 +81,9 @@ class Module extends CI_Controller
         }else{
             $_SESSION['prevUrl'] = base_url('/').'student/organization';
         }
-        $loggedStudentId  = $this->loggedUserId;
-        $studentsTutor = $this->Student_model->allTutor($loggedStudentId);
+
+        $loggedStudentId = $this->loggedUserId;
+        $studentsTutor   = $this->Student_model->allTutor($loggedStudentId);
 
         //all tutor ids of a student
         $allTutorIds = array_column($studentsTutor, 'id');

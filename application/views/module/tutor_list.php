@@ -3,12 +3,12 @@
   .accordion-group{margin-bottom:10px;border-radius:0;}
   .accordion-toggle{
     background:rgb(248, 251, 252);
-    
+
   }
 
   .accordion-toggle:hover{
     text-decoration: none;
-    
+
   }
 
   .accordion-heading .accordion-toggle {
@@ -28,6 +28,8 @@
   }
 
 </style>
+
+
 
 <div class="today_task">
 	<div class="container-fluid">
@@ -54,14 +56,15 @@
 				<div class="panel panel-default">
 					<div class="panel-heading" role="tab" id="headingOne">
 						<h4 class="panel-title">
-							<a role="button" data-toggle="collapse" data-parent="#task_accordion" href="#collapseOnetask" aria-expanded="true" aria-controls="collapseOne"> 
+							<a role="button" data-toggle="collapse" data-parent="#task_accordion" href="#collapseOnetask" aria-expanded="true" aria-controls="collapseOne">
 								<span>  Tutor Name </span>
 							</a>
 						</h4>
 					</div>
 					<div class="row">
 						<div class="col-sm-12">
-						  <ul>
+
+            <ul>
 
 							<?php foreach ($allTutors as $tutor) : ?>
 
@@ -71,7 +74,7 @@
                           <i class="fa fa-caret-right"></i>
                           <?php echo $tutor['name']; ?>
                       </a>
-    
+
                       <ul style="margin-left: 20px;">
                           <?php if(isset($tutor['child_info'])){
                               foreach ($tutor['child_info'] as $child_info) : ?>
@@ -86,7 +89,7 @@
                   </li>
                 <?php  } ?>
               <?php endforeach; ?>
-							
+
 						  </ul>
 
 						</div>

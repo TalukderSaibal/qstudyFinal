@@ -772,6 +772,10 @@ class Student extends CI_Controller
 
         $data['module_info'] = $this->Student_model->getInfo('tbl_module', 'id', $modle_id);
 
+        // echo '<pre>';
+        // print_r($data['module_info']);
+        // die();
+
         $data['user_infos'] = $this->Student_model->get_user_informations($data['user_id']);
 
         if (!$data['module_info'][0]) {
@@ -842,11 +846,14 @@ class Student extends CI_Controller
             $question_order_id = $question_order_id + 1;
             redirect('get_tutor_tutorial_module/' . $modle_id . '/' . $question_order_id);
         }
+
         $data['total_question'] = $this->tutor_model->getModuleQuestion($modle_id, null, 1);
-        $data['page_title'] = '.:: Q-Study :: Tutor yourself...';
+        $data['page_title']     = '.:: Q-Study :: Tutor yourself...';
+
         //echo "<pre>";print_r($data['total_question']);die();
+
         $data['headerlink'] = $this->load->view('dashboard_template/headerlink', $data, true);
-        $data['header'] = '';
+        $data['header']     = '';
         $data['footerlink'] = $this->load->view('dashboard_template/footerlink', $data, true);
 
         //video link classify
@@ -1064,14 +1071,14 @@ class Student extends CI_Controller
             }
             $data['maincontent'] = $this->load->view('students/question_module_type_tutorial/ans_workout_quiz_two', $data, true);
         } elseif ($data['question_info_s'][0]['questionType'] == 16) {
-            $data['question_item'] = $data['question_info_s'][0]['questionType'];
-            $data['question_info'] = json_decode($data['question_info_s'][0]['questionName']);
+
+            $data['question_item']     = $data['question_info_s'][0]['questionType'];
+            $data['question_info']     = json_decode($data['question_info_s'][0]['questionName']);
             $data['question_info_ind'] = $data['question_info'];
 
-
-
             $question_info_ind = $data['question_info'];
-            $pattern_type = $question_info_ind->pattern_type;
+            $pattern_type      = $question_info_ind->pattern_type;
+
             if ($pattern_type == 4) {
                 $qus_lefts = $question_info_ind->left_memorize_p_four;
                 $qus_rights = $question_info_ind->right_memorize_p_four;
@@ -1094,10 +1101,12 @@ class Student extends CI_Controller
                 $k = 1;
                 $inv = 0;
                 foreach ($question_step as $key => $value) {
+
                     $qus_setup_array[$key]['question_step'] = $value[0];
-                    $qus_setup_array[$key]['clue'] = $value[1];
-                    $qus_setup_array[$key]['ecplanation'] = $value[2];
+                    $qus_setup_array[$key]['clue']          = $value[1];
+                    $qus_setup_array[$key]['ecplanation']   = $value[2];
                     $qus_setup_array[$key]['answer_status'] = $value[3];
+
                     if ($value[3] == 0) {
                         $qus_setup_array[$key]['order'] = $k;
                         $k = $k + 1;
@@ -1106,6 +1115,7 @@ class Student extends CI_Controller
                         $inv--;
                     }
                 }
+
                 $data['qus_setup_array'] = $qus_setup_array;
 
 
@@ -4051,8 +4061,7 @@ class Student extends CI_Controller
         $this->load->view('master_dashboard', $data);
     }
 
-    public function all_tutors_by_type($tutor_id, $module_type,$is_practice=0)
-    {
+    public function all_tutors_by_type($tutor_id, $module_type,$is_practice=0){
         // echo $is_practice."hello";die();
         //echo date('Y-m-d');die();
         $_SESSION['show_tutorial_result'] = 0;
@@ -4078,6 +4087,7 @@ class Student extends CI_Controller
         $data['moduleType'] = $module_type;
         $data['tutorInfo'] = $this->Student_model->getInfo('tbl_useraccount', 'id', $tutor_id);
 
+        // echo '<pre>';print_r($data['tutorInfo']);die();
 
         //If not match with today date
         //$this->delete_st_error_ans(date('Y-m-d'));
@@ -4155,8 +4165,10 @@ class Student extends CI_Controller
                 // $data['studentSubjects'] = array_values(array_column($students_all_subject, null, 'subject_id'));
                 $subject_with_course = $this->Student_model->getInfo('tbl_subject', 'created_by', $tutor_id);
             }
-             $data['studentSubjects'] = $subject_with_course;
-             $data['studentChapters'] = $chapter_with_course;
+
+            $data['studentSubjects'] = $subject_with_course;
+            $data['studentChapters'] = $chapter_with_course;
+
             //$students_all_subject = array();
 
             //foreach ($subject_with_course as $subject_course) {
@@ -4204,22 +4216,22 @@ class Student extends CI_Controller
 
             // shukriti new start == get all subject id
                // echo "<pre>";print_r($data['registered_courses']);die();
-               $all_course_id = array();
-               if(!empty($data['registered_courses'])){
-                foreach($data['registered_courses'] as $course){
-                    $all_course_id[] = $course['id'];
-                }
-                //echo "<pre>";print_r($all_course_id);die();
-                $subject_id_by_course = $this->Student_model->getAllSubjectByCourse($all_course_id,$module_type);
-                // echo $this->db->last_query(); die();
+                $all_course_id = array();
+                if(!empty($data['registered_courses'])){
+                    foreach($data['registered_courses'] as $course){
+                        $all_course_id[] = $course['id'];
+                    }
+                    //echo "<pre>";print_r($all_course_id);die();
+                    $subject_id_by_course = $this->Student_model->getAllSubjectByCourse($all_course_id,$module_type);
+                    // echo $this->db->last_query(); die();
 
-                if(!empty($subject_id_by_course)){
-                    $sb =  $this->Student_model->getInfo_subjects('tbl_subject', 'subject_id', $subject_id_by_course);
-                }else{
-                    $sb = null;
-                }
+                    if(!empty($subject_id_by_course)){
+                        $sb =  $this->Student_model->getInfo_subjects('tbl_subject', 'subject_id', $subject_id_by_course);
+                    }else{
+                        $sb = null;
+                    }
                 // echo "<pre>";print_r($sb);die();
-               }
+                }
             // shukriti  end
 
             //if (isset($sb) && $sb != '') {
@@ -4238,6 +4250,7 @@ class Student extends CI_Controller
                 $_SESSION['prevUrl'] = $_SERVER['HTTP_REFERER'];
             }
         }
+
         if(empty($data['first_course_id'])){
             $data['first_course_id']=0;
         }
@@ -4247,32 +4260,34 @@ class Student extends CI_Controller
 
         $this->session->set_userdata('is_practice', $is_practice);
 
-        $assignModuleByTutor = array();
-        $assignModuleByTutor = $this->ModuleModel->studentHomework($tutor_id, $module_type);
+        $assignModuleByTutor                  = array();
+        $assignModuleByTutor                  = $this->ModuleModel->studentHomework($tutor_id, $module_type);
         $data['assignModuleByTutorSubjectID'] = $assignModuleByTutor;
 
         $data['has_back_button'] = 'student';
-        $data['page_title'] = '.:: Q-Study :: Tutor yourself...';
-        $data['headerlink'] = $this->load->view('dashboard_template/headerlink', $data, true);
-        $data['header'] = $this->load->view('dashboard_template/header', $data, true);
-        $data['footerlink'] = $this->load->view('dashboard_template/footerlink', $data, true);
-        $data['maincontent'] = $this->load->view('students/module/all_module_list', $data, true);
+        $data['page_title']      = '.:: Q-Study :: Tutor yourself...';
+        $data['headerlink']      = $this->load->view('dashboard_template/headerlink', $data, true);
+        $data['header']          = $this->load->view('dashboard_template/header', $data, true);
+        $data['footerlink']      = $this->load->view('dashboard_template/footerlink', $data, true);
+        $data['maincontent']     = $this->load->view('students/module/all_module_list', $data, true);
 
         $this->load->view('master_dashboard', $data);
     }
+
+
     public function studentsModuleByQStudyNew()
     {
         // echo 11; die();
 
         $data['user_info'] = $this->Student_model->getInfo('tbl_useraccount', 'id', $this->session->userdata('user_id'));
 
-        $parent_id = $data['user_info'][0]['parent_id'];
+        $parent_id       = $data['user_info'][0]['parent_id'];
         $payment_details = $this->db->where('user_id', $this->session->userdata('user_id'))->limit(1)->order_by('id', 'desc')->get('tbl_payment')->row();
-        $payment_id = $payment_details->id;
-        $payment_courses  = $this->Student_model->paymentCourse($payment_id);
+        $payment_id      = $payment_details->id;
+        $payment_courses = $this->Student_model->paymentCourse($payment_id);
 
-        $posts         = $this->input->post();
-        $tutorId      = isset($posts['tutorId']) ? $posts['tutorId'] : '';
+        $posts           = $this->input->post();
+        $tutorId         = isset($posts['tutorId']) ? $posts['tutorId'] : '';
         $st_colaburation = 0;
 
 
@@ -5459,7 +5474,8 @@ class Student extends CI_Controller
 
     public function get_permission()
     {
-        // print_r($_SERVER);
+        // print_r($_SERVER);die;
+        // echo 12;die;
         $check_url =  $_SERVER['HTTP_REFERER'];
         $word = "all_tutors_by_type";
 

@@ -60,7 +60,7 @@ $route['signup/upper_level_student'] ='RegisterController/showSignUpPlan';
 $route['signup/tutor'] ='RegisterController/showSignUpPlan';
 $route['signup/school'] ='RegisterController/showSignUpPlan';
 $route['signup/corporate'] ='RegisterController/showSignUpPlan';
- 
+
 
 
 // $route['select_country']='RegisterController/selectCountry';
@@ -81,7 +81,7 @@ $route['trial/corporate'] ='RegisterController/showSignUpPlan';
 
 $route['redirect_url'] = 'RegisterController/redirect_url';
 
- 
+
 /* for paypal payment*/
 $route['paypal_new']='RegisterController/show_paypal_form';
 $route['signup-paypal']='RegisterController/show_signup_paypal_form';
@@ -291,7 +291,7 @@ $route['loginChk']='Login/loginChk';
 $route['logout']='Logout';
 // Added AS
 $route['parent_password_check']='Login/parent_password_check';
- 
+
 //Settings
 $route['cancel_subscription']='dashboard/cancel_subscription';
 $route['cancel_confirm']='dashboard/cancel_confirm';
@@ -333,7 +333,7 @@ $route['course/data_input']='qstudy/data_input';
 
 $route['course/data_input_personal/(:any)']='qstudy/data_input_personal/$1';
 
-// Whiteboard section 
+// Whiteboard section
 $route['whiteboard-items']='tutor/whiteboard_items';
 $route['std-whiteboard-items']='student/whiteboard_items';
 $route['tutor-question-store']='tutor/tutor_question_store';
@@ -409,7 +409,7 @@ $route['question_answer_matching_grammer']='Preview/question_answer_matching_gra
 $route['question_answer_matching_glossary']='Preview/question_answer_matching_glossary';
 $route['question_answer_matching_image_quiz']='Preview/question_answer_matching_image_quiz';
 
-// Module preview 
+// Module preview
 $route['module_answer_matching_comprehension']='Preview/module_answer_matching_comprehension';
 $route['module_answer_matching_grammer']='Preview/module_answer_matching_grammer';
 
@@ -441,7 +441,7 @@ $route['student_creative_quiz_ans_matching']='Student/student_creative_quiz_ans_
 $route['st_answer_sentence_matching']='Student/st_answer_sentence_matching';
 $route['st_answer_word_memorization']='Student/st_answer_word_memorization';
 $route['st_answer_comprehension']='Student/st_answer_comprehension';
-$route['st_answer_grammer']='Student/st_answer_grammer'; 
+$route['st_answer_grammer']='Student/st_answer_grammer';
 $route['st_answer_glossary']='Student/st_answer_glossary';
 $route['st_answer_image_quiz']='Student/st_answer_image_quiz';
 
@@ -550,8 +550,8 @@ $route['edit-templete/(:any)'] = 'Admin/edit_templete/$1';
 
 $route['assign-module/(:any)'] = 'Tutor/assignModule/$1';
 
-$route['module/school/tutor_list/(:any)'] = 'Module/SchooltutorList/$1'; 
-$route['module/corporate/tutor_list/(:any)'] = 'Module/CorporatetutorList/$1'; 
+$route['module/school/tutor_list/(:any)'] = 'Module/SchooltutorList/$1';
+$route['module/corporate/tutor_list/(:any)'] = 'Module/CorporatetutorList/$1';
 
 //product list
 $route['product_list'] = 'Admin/product_list';
@@ -579,17 +579,17 @@ $route['download_feedback_file/(:any)']='Admin/download_feedback_file/$1';
 $route['see-compose-message'] = 'CommonAccess/getsendMessage';
 $route['directDepositSetting/(:any)'] = 'Admin/directDepositSetting/$1';
 
-// route/shukriti---------------- 
+// route/shukriti----------------
 $route['save_idea'] = 'Question/save_idea';
 $route['edit_idea'] = 'Question/edit_idea';
 $route['edit_save_idea'] = 'Question/edit_save_idea';
 $route['save_image_idea'] = 'Question/save_image_idea';
 $route['check_idea_short_question'] = 'Question/check_idea_short_question';
-$route['get_idea'] = 'Question/get_idea'; 
+$route['get_idea'] = 'Question/get_idea';
 $route['search_idea'] = 'Question/search_idea';
 $route['search_image_idea'] = 'Question/search_image_idea';
 $route['getUserInfos'] = 'Question/getUserInfos';
-$route['save_more_idea'] = 'Question/save_more_idea';  
+$route['save_more_idea'] = 'Question/save_more_idea';
 $route['update_short_question'] = 'Question/update_short_question';
 
 $route['profile_update'] = 'Student/profile_update';
@@ -631,7 +631,7 @@ $route['module_question_duplicate'] = 'Module/moduleDuplicateQuestion';
 $route['module_question_sorting'] = 'Module/moduleQuestionSorting';
 $route['edit_module_question_sorting'] = 'Module/EditmoduleQuestionSorting';
 
-//module 
+//module
 $route['save_new_module_question'] = 'Module/saveNewModuleQuestion';
 $route['update_new_module_question'] = 'Module/updateNewModuleQuestion';
 
@@ -671,7 +671,7 @@ $route['type_three_box_one_image_upload/(:any)'] = 'Question/type_three_box_one_
 
 $route['html_text_to_array'] = 'Question/html_text_to_array';
 
-/* Creative Quiz */ 
+/* Creative Quiz */
 $route['tutor_student_idea_setting/(:any)/(:any)/(:any)/(:any)'] = 'Tutor/tutor_student_idea_setting/$1/$2/$3/$4';
 $route['tutor_question_idea/(:any)/(:any)'] = 'Admin/tutor_question_idea/$1/$2';
 
