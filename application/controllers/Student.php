@@ -8146,8 +8146,8 @@ class Student extends CI_Controller
         echo $html;
     }
 
-    public function organization()
-    {
+    public function organization(){
+        // echo 12;die;
         if ($this->session->userdata('userType') == 6) {
             $data['video_help'] = $this->FaqModel->videoSerialize(15, 'video_helps');
             $data['video_help_serial'] = 15;

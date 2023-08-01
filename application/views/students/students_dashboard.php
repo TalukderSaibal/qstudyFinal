@@ -1,17 +1,17 @@
-<?php  
-// echo "<pre>";print_r($user_info);die();
-$parent_detail = getParentIDPaymetStatus($user_info[0]['parent_id']);
+<?php
+    // echo "<pre>";print_r($user_info);die();
+    $parent_detail = getParentIDPaymetStatus($user_info[0]['parent_id']);
 
-if ($parent_detail[0]['subscription_type'] =="direct_deposite") {
-    if ($parent_detail[0]['direct_deposite'] == 0 ) {
+    if ($parent_detail[0]['subscription_type'] =="direct_deposite") {
+        if ($parent_detail[0]['direct_deposite'] == 0 ) {
+            $parent_direct_deposite = 1;
+        }
+    }
+
+    if($checkDirectDepositCourseStatus > 0 && $checkRegisterCourses == 0){
+        $checkDirectDepositCourseStatus = 1;
         $parent_direct_deposite = 1;
     }
-}
-
-if($checkDirectDepositCourseStatus > 0 && $checkRegisterCourses == 0){
-    $checkDirectDepositCourseStatus = 1;
-    $parent_direct_deposite = 1;
-}
 
 ?>
 
@@ -19,107 +19,120 @@ if($checkDirectDepositCourseStatus > 0 && $checkRegisterCourses == 0){
 <style>
 /* bhugi jugi */
 
-ul.personal_ul li:first-child {
-    margin-right: 5px;
-}
+    ul.personal_ul li:first-child {
+        margin-right: 5px;
+    }
 
-ul.personal_ul li {
-    margin-right: 5px;
-}
-.presonal2 a {
-    color:#fff !important;
-}
-.presonal2 {
-    background-color: #EB1F28 !important;
-}
-.presonal {
-    background-color: #006F8C !important;
-}
-.ss_shudule li img{
-max-height: 51px
-}
-.ss_shudule li{
-    background: #fff !important;
-    border:1px solid #cbbebe;
-    border-radius: 20px;
-    padding: 20px;
-    min-height: 106px;
-    min-width: 176px;
-    box-sizing: border-box;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-      
-}
-.ss_shudule li:first-child{
-    border-radius: 58%;
-    min-height: 128px;
-    min-width: 125px;
-}
+    ul.personal_ul li {
+        margin-right: 5px;
+    }
+    .presonal2 a {
+        color:#fff !important;
+    }
+    .presonal2 {
+        background-color: #EB1F28 !important;
+    }
+    .presonal {
+        background-color: #006F8C !important;
+    }
+    .ss_shudule li img{
+    max-height: 51px
+    }
+    .ss_shudule li{
+        background: #fff !important;
+        border:1px solid #cbbebe;
+        border-radius: 20px;
+        padding: 20px;
+        min-height: 106px;
+        min-width: 176px;
+        box-sizing: border-box;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
 
-.presonal:hover {
-    background-color: yellow;
-}
+    }
+    .ss_shudule li:first-child{
+        border-radius: 58%;
+        min-height: 128px;
+        min-width: 125px;
+    }
 
-.ss_shudule li a{
-    color: #000 !important;
-}
-.ss_shudule li h5 {
-font-size: 19px;
-}
-.btnChngByHover {
-  color: #333!important;
-}
-.btnChngByHover:hover {
-    background-color: #0078ae;
-}
+    .presonal:hover {
+        background-color: yellow;
+    }
 
-.div2 {
-    margin-left: 54px;
-    margin: -109px;
-}
+    .ss_shudule li a{
+        color: #000 !important;
+    }
+    .ss_shudule li h5 {
+    font-size: 19px;
+    }
+    .btnChngByHover {
+    color: #333!important;
+    }
+    .btnChngByHover:hover {
+        background-color: #0078ae;
+    }
 
-#myModalLabel{
-    background: #83b6c7;
-    padding: 3px 10px;
-    border-radius: 5px;
-    color: #fff;
-}
+    .div2 {
+        margin-left: 54px;
+        margin: -109px;
+    }
+
+    #myModalLabel{
+        background: #83b6c7;
+        padding: 3px 10px;
+        border-radius: 5px;
+        color: #fff;
+    }
 </style>
+
+
 <?php if ($user_info[0]['suspension_status'] == 1){ ?>
     <div class="row">
         <div class="col-md-5" id="message_denied">
-            <p class="alert alert-success"  style="width: 100%"> 
+            <p class="alert alert-success"  style="width: 100%">
                 <b> Your registration has suspend. Please contact with Q-study</b>
             </p>
         </div>
     </div>
     <br>
     <ul class="personal_ul personal_ul_course schedule ss_shudule">
+
         <li class="presonal">
             <a href="">
                 <h5>Personal</h5>
-              <img src="" height="40" >
-          </a> </li>
+                <img src="" height="40" >
+            </a>
+        </li>
+
         <li class="presonal2" style="padding: 10px">
-            <a href=""> 
+            <a href="">
                 <h5>View Progress</h5>
-         <img src="<?= base_url('/assets/images/35_ View Progress.jpg') ?>"  height="40">
-        </a></li>
-        <li class="presonal2" style="padding: 10px"><a href=""> 
+                <img src="<?= base_url('/assets/images/35_ View Progress.jpg') ?>"  height="40">
+            </a>
+        </li>
+
+        <li class="presonal2" style="padding: 10px">
+            <a href="">
                 <h5>Course</h5>
-         <img src="<?= base_url('/assets/images/36_Course.jpg') ?>"  height="40" ></a>
+                <img src="<?= base_url('/assets/images/36_Course.jpg') ?>"  height="40" >
+            </a>
         </li>
 
-        <li class="presonal2" style="padding: 10px"><a href=""> 
-            <h5>Practice</h5>
-            <img src="<?= base_url('/assets/images/practice.jpg') ?>"  height="40" ></a>
+        <li class="presonal2" style="padding: 10px">
+            <a href="">
+                <h5>Practice</h5>
+                <img src="<?= base_url('/assets/images/practice.jpg') ?>"  height="40" >
+            </a>
         </li>
 
-        <li class="presonal2" style="padding: 10px;cursor: pointer;"><a id="quick_help_alert"> 
+        <li class="presonal2" style="padding: 10px;cursor: pointer;">
+            <a id="quick_help_alert">
             <h5>Quick Help From Tutor</h5>
             <img src="<?= base_url('/assets/images/quick_help.jpg') ?>" style="height: 40px;width: 50px;position: relative;top: -25px;left: 55px;"></a>
         </li>
     </ul>
+
 <?php }else{ ?>
 <div class="">
     <input type="hidden" id="checkUnavailableProduct" value="<?= (isset($checkUnavailableProduct))?$checkUnavailableProduct:0;?>">
@@ -128,22 +141,23 @@ font-size: 19px;
             <img src="assets/images/rsz_59.jpg" class="img-responsive"> <br>
             <span style="color: red;"> Your subscriptions is pending . As soon as received the payment it will active. </span>
         </div>
-    <?php endif ?> 
-	
-	<?php
-     $end_subscription = $user_info[0]['end_subscription'];
-     if (isset($end_subscription)) {
-         $d1 = date('Y-m-d',strtotime($end_subscription));
-         $d2 = date('Y-m-d');
-     }
+    <?php endif ?>
 
-     if ($user_info[0]['subscription_type'] =="trial") {
+	<?php
+        $end_subscription = $user_info[0]['end_subscription'];
+        if (isset($end_subscription)) {
+        $d1 = date('Y-m-d',strtotime($end_subscription));
+        $d2 = date('Y-m-d');
+        }
+
+        if ($user_info[0]['subscription_type'] =="trial") {
         $createAt = $user_info[0]['created'];
         $this->load->helper('commonmethods_helper');
         $days = getTrailDate($createAt,$this->db);
 
-     }
-     if ((isset($end_subscription) && $d1 > $d2) || ($user_info[0]['subscription_type'] =="trial" && $days > 0) || ($user_info[0]['subscription_type'] =="guest" && $user_info[0]['unlimited'] == 1)) { ?>
+        }
+
+        if ((isset($end_subscription) && $d1 > $d2) || ($user_info[0]['subscription_type'] =="trial" && $days > 0) || ($user_info[0]['subscription_type'] =="guest" && $user_info[0]['unlimited'] == 1)) { ?>
     <div class="row" class="studentAllModule" style="margin: 0 83px;text-align: center;display: flex;justify-content: center;" >
         <?php  if ($student_colaburation != 1): ?>
             <div class="col-md-2" id="q_study_homework" style="display: none;float: none;">
@@ -211,7 +225,7 @@ font-size: 19px;
                 <img src="assets/images/rsz_59.jpg" class="img-responsive" style="margin: 0 25%;"> <br>
 
                 <a href="<?= base_url("/")."module/tutor_list/1" ?>">
-                <span style="color: red;"> <p style="text-align: center; text-decoration: underline; color: red; " > <b>Tutor Homework</b> </p> <p style="color: red; text-align: center;"><b>(Tutorial)</b>  </p>  </span> 
+                <span style="color: red;"> <p style="text-align: center; text-decoration: underline; color: red; " > <b>Tutor Homework</b> </p> <p style="color: red; text-align: center;"><b>(Tutorial)</b>  </p>  </span>
                 </a>
 
 
@@ -255,7 +269,7 @@ font-size: 19px;
                 <img src="assets/images/rsz_59.jpg" class="img-responsive" style="margin: 0 25%;"> <br>
 
                 <a href="<?= base_url("/")."module/school/tutor_list/1" ?>">
-                <span style="color: red;"> <p style="text-align: center; text-decoration: underline; color: red; " > <b>School Homework</b> </p> <p style="color: red; text-align: center;"><b>(Tutorial)</b>  </p>  </span> 
+                <span style="color: red;"> <p style="text-align: center; text-decoration: underline; color: red; " > <b>School Homework</b> </p> <p style="color: red; text-align: center;"><b>(Tutorial)</b>  </p>  </span>
                 </a>
 
 
@@ -281,7 +295,7 @@ font-size: 19px;
                 </a>
             </div>
         </div>
-        
+
         <div class="col-md-2" id="corporate_showTutorEveyday" style="display: none;float: none;" >
             <div >
                 <img src="assets/images/rsz_59.jpg" class="img-responsive" style="margin: 0 25%;"> <br>
@@ -296,7 +310,7 @@ font-size: 19px;
                 <img src="assets/images/rsz_59.jpg" class="img-responsive" style="margin: 0 25%;"> <br>
 
                 <a href="<?= base_url("/")."module/corporate/tutor_list/1" ?>">
-                <span style="color: red;"> <p style="text-align: center; text-decoration: underline; color: red; " > <b>Corporate Homework</b> </p> <p style="color: red; text-align: center;"><b>(Tutorial)</b>  </p>  </span> 
+                <span style="color: red;"> <p style="text-align: center; text-decoration: underline; color: red; " > <b>Corporate Homework</b> </p> <p style="color: red; text-align: center;"><b>(Tutorial)</b>  </p>  </span>
                 </a>
 
 
@@ -325,7 +339,7 @@ font-size: 19px;
         </div>
 
     </div>
-    
+
     <?php }else{ ?>
     <div class="row" class="studentAllModule" style="margin: 0 83px;text-align: center;display: flex;justify-content: center;" >
         <div class="col-md-2" id="q_study_homework_" style="display: none;float: none;">
@@ -339,7 +353,7 @@ font-size: 19px;
             </div>
         </div>
 
-        
+
         <div class="col-md-2" id="q_study_tutorial_" style="display: none;float: none;" >
             <div >
                 <img src="assets/images/rsz_59.jpg" class="img-responsive" style="margin: 0 25%;"> <br>
@@ -363,7 +377,7 @@ font-size: 19px;
                 <img src="assets/images/rsz_59.jpg" class="img-responsive" style="margin: 0 25%;"> <br>
 
                 <a  style="cursor: pointer;" class="subcribe_expired">
-                <span style="color: red;"> <p style="text-align: center; text-decoration: underline; color: red; " > <b>Tutor Homework</b> </p> <p style="color: red; text-align: center;"><b>(Tutorial)</b>  </p>  </span> 
+                <span style="color: red;"> <p style="text-align: center; text-decoration: underline; color: red; " > <b>Tutor Homework</b> </p> <p style="color: red; text-align: center;"><b>(Tutorial)</b>  </p>  </span>
                 </a>
 
 
@@ -407,7 +421,7 @@ font-size: 19px;
                 <img src="assets/images/rsz_59.jpg" class="img-responsive" style="margin: 0 25%;"> <br>
 
                 <a style="cursor: pointer;" class="subcribe_expired">
-                <span style="color: red;"> <p style="text-align: center; text-decoration: underline; color: red; " > <b>School Homework</b> </p> <p style="color: red; text-align: center;"><b>(Tutorial)</b>  </p>  </span> 
+                <span style="color: red;"> <p style="text-align: center; text-decoration: underline; color: red; " > <b>School Homework</b> </p> <p style="color: red; text-align: center;"><b>(Tutorial)</b>  </p>  </span>
                 </a>
 
 
@@ -448,7 +462,7 @@ font-size: 19px;
                 <img src="assets/images/rsz_59.jpg" class="img-responsive" style="margin: 0 25%;"> <br>
 
                 <a style="cursor: pointer;" class="subcribe_expired">
-                <span style="color: red;"> <p style="text-align: center; text-decoration: underline; color: red; " > <b>Corporate Homework</b> </p> <p style="color: red; text-align: center;"><b>(Tutorial)</b>  </p>  </span> 
+                <span style="color: red;"> <p style="text-align: center; text-decoration: underline; color: red; " > <b>Corporate Homework</b> </p> <p style="color: red; text-align: center;"><b>(Tutorial)</b>  </p>  </span>
                 </a>
 
 
@@ -478,12 +492,12 @@ font-size: 19px;
     <div class="row">
         <div class="col-md-7"></div>
         <div class="col-md-5" id="message_denied" style="display: none;">
-            <p class="alert alert-success"  style="width: 90%"> 
+            <p class="alert alert-success"  style="width: 90%">
                 <b> You need to subcribe to get access full features. </b>
             </p>
         </div>
         <div class="col-md-5" id="quick_help_message_denied" style="display: none;">
-            <p class="alert alert-success"  style="width: 90%"> 
+            <p class="alert alert-success"  style="width: 90%">
                 <b> This feature is not yet, comming soon </b>
             </p>
         </div>
@@ -491,8 +505,8 @@ font-size: 19px;
     <br>
     <?php if (!isset($parent_direct_deposite)): ?>
         <ul class="personal_ul personal_ul_course schedule ss_shudule">
-            <?php 
-            
+            <?php
+
              $end_subscription = $user_info[0]['end_subscription'];
              if (isset($end_subscription)) {
                  $d1 = date('Y-m-d',strtotime($end_subscription));
@@ -512,26 +526,26 @@ font-size: 19px;
                   <img src="<?= base_url('/assets/images/34_ Personal.jpg') ?>" height="40" >
               </a> </li>
             <li class="presonal2" style="padding: 10px">
-                <a href="<?php echo base_url(); ?>student_progress_step"> 
+                <a href="<?php echo base_url(); ?>student_progress_step">
                     <h5>View Progress</h5>
              <img src="<?= base_url('/assets/images/35_ View Progress.jpg') ?>"  height="40">
             </a></li>
-            <li class="presonal2" style="padding: 10px"><a href="<?php echo base_url(); ?>student/organization"> 
-                    <h5>Course</h5>
+            <li class="presonal2" style="padding: 10px"><a href="<?php echo base_url(); ?>student/organization">
+                    <h5>Course one</h5>
              <img src="<?= base_url('/assets/images/36_Course.jpg') ?>"  height="40" ></a>
             </li>
 
-            <li class="presonal2" style="padding: 10px"><a href="<?php echo base_url(); ?>all_tutors_by_type/2/1/1"> 
+            <li class="presonal2" style="padding: 10px"><a href="<?php echo base_url(); ?>all_tutors_by_type/2/1/1">
                     <h5>Practice</h5>
              <img src="<?= base_url('/assets/images/practice.jpg') ?>"  height="40" ></a>
             </li>
 
-            <li class="presonal2" style="padding: 10px;cursor: pointer;"><a id="quick_help_alert"> 
+            <li class="presonal2" style="padding: 10px;cursor: pointer;"><a id="quick_help_alert">
                     <h5>Quick Help From Tutor</h5>
              <img src="<?= base_url('/assets/images/quick_help.jpg') ?>" style="height: 40px;width: 50px;position: relative;top: -25px;left: 55px;"></a>
             </li>
             <!-- shvou -->
-            <?php 
+            <?php
                 if ($user_info[0]['subscription_type'] =="trial") {
                     $createAt = $user_info[0]['created'];
                     $this->load->helper('commonmethods_helper');
@@ -540,13 +554,13 @@ font-size: 19px;
                 }
                 if (isset($days)): ?>
                 <?php if ($days < 1): ?>
-                    <li class="presonal2" style="background: #eadddd !important;"><a href="<?php echo base_url();?>select_course"> 
+                    <li class="presonal2" style="background: #eadddd !important;"><a href="<?php echo base_url();?>select_course">
                         <h5>Active Subcription</h5>
-                    </li> 
+                    </li>
                 <?php endif ?>
             <?php endif ?>
-                
-            <?php 
+
+            <?php
                 $end_subscription = $user_info[0]['end_subscription'];
                 if (isset($end_subscription)) {
                     $d1 = date('Y-m-d',strtotime($end_subscription));
@@ -555,31 +569,31 @@ font-size: 19px;
                 if (isset($end_subscription) && $end_subscription != null): ?>
                 <?php if (($d1 > $d2 && $user_info[0]['payment_status'] != "Cancel")){ ?>
                     <?php if ($user_info[0]['user_type'] == 6){ ?>
-                        <li class="presonal2" style="background: #d63832 !important;padding: 10px;"><a data-toggle="modal" data-target="#subscriptions_cancel_by_student" style="cursor: pointer;color: #fff !important;"> 
+                        <li class="presonal2" style="background: #d63832 !important;padding: 10px;"><a data-toggle="modal" data-target="#subscriptions_cancel_by_student" style="cursor: pointer;color: #fff !important;">
                             <h5>Cancel Subcription</h5>
-                        </a></li> 
-                        
+                        </a></li>
+
                     <?php }else{ ?>
-                        <li class="presonal2" style="background: #d63832 !important;padding: 10px;"><a data-toggle="modal" data-target="#subscriptions_cancel" style="cursor: pointer;color: #fff !important;"> 
+                        <li class="presonal2" style="background: #d63832 !important;padding: 10px;"><a data-toggle="modal" data-target="#subscriptions_cancel" style="cursor: pointer;color: #fff !important;">
                             <h5>Cancel Subcription</h5>
-                        </a></li> 
+                        </a></li>
                     <?php } ?>
                 <?php }else if(($d1 < $d2 && $user_info[0]['payment_status'] != "Cancel")){ ?>
-                    <li class="presonal2" style="background: #eadddd !important;"><a href="<?php echo base_url();?>select_course"> 
+                    <li class="presonal2" style="background: #eadddd !important;"><a href="<?php echo base_url();?>select_course">
                         <h5>Active Subcription</h5>
-                    </a></li> 
+                    </a></li>
                 <?php }else{ ?>
                     <li class="presonal2" style="background: #eadddd !important;"><a  data-toggle="modal" data-target="#subscriptions_active" style="cursor: pointer;">
                        <h5>Active Subcription</h5></a>
-                    </li> 
+                    </li>
                 <?php } ?>
-                
-                <li class="presonal2" style="padding: 3px 29px;cursor: pointer;border:none"><a href="<?php echo base_url();?>select_course" id="quick_help_alert"> 
+
+                <li class="presonal2" style="padding: 3px 29px;cursor: pointer;border:none"><a href="<?php echo base_url();?>select_course" id="quick_help_alert">
                     <h5><u>Buy Now Add Course</u></h5>
                     <img src="<?= base_url('/assets/images/product/juri.PNG') ?>" style="height: 40px;"></a>
                 </li>
             <?php endif ?>
-            
+
             <!-- main condition -->
             <?php }else if(($user_info[0]['subscription_type'] =="trial" && $days > 0) || ($user_info[0]['subscription_type'] =="guest" && $user_info[0]['unlimited'] == 1)){ ?>
                 <li class="presonal">
@@ -588,26 +602,26 @@ font-size: 19px;
                       <img src="<?= base_url('/assets/images/34_ Personal.jpg') ?>" height="40" >
                   </a> </li>
                 <li class="presonal2" style="padding: 10px">
-                    <a href="<?php echo base_url(); ?>student_progress_step"> 
+                    <a href="<?php echo base_url(); ?>student_progress_step">
                         <h5>View Progress</h5>
                  <img src="<?= base_url('/assets/images/35_ View Progress.jpg') ?>"  height="40">
                 </a></li>
-                <li class="presonal2" style="padding: 10px"><a href="<?php echo base_url(); ?>student/organization"> 
+                <li class="presonal2" style="padding: 10px"><a href="<?php echo base_url(); ?>student/organization">
                         <h5>Course</h5>
                  <img src="<?= base_url('/assets/images/36_Course.jpg') ?>"  height="40" ></a>
                 </li>
 
-                <li class="presonal2" style="padding: 10px"><a href="<?php echo base_url(); ?>all_tutors_by_type/2/1"> 
+                <li class="presonal2" style="padding: 10px"><a href="<?php echo base_url(); ?>all_tutors_by_type/2/1">
                         <h5>Practice</h5>
                  <img src="<?= base_url('/assets/images/practice.jpg') ?>"  height="40" ></a>
                 </li>
 
-                <li class="presonal2" style="padding: 10px;cursor: pointer;"><a id="quick_help_alert"> 
+                <li class="presonal2" style="padding: 10px;cursor: pointer;"><a id="quick_help_alert">
                         <h5>Quick Help From Tutor</h5>
                  <img src="<?= base_url('/assets/images/quick_help.jpg') ?>" style="height: 40px;width: 50px;position: relative;top: -25px;left: 55px;"></a>
                 </li>
-                
-                <li class="presonal2" style="padding: 3px 29px;cursor: pointer;border:none"><a href="<?php echo base_url();?>select_course" id="quick_help_alert"> 
+
+                <li class="presonal2" style="padding: 3px 29px;cursor: pointer;border:none"><a href="<?php echo base_url();?>select_course" id="quick_help_alert">
                     <h5><u>Buy Now Add Course</u></h5>
                     <img src="<?= base_url('/assets/images/product/juri.PNG') ?>" style="height: 40px;"></a>
                 </li>
@@ -618,21 +632,21 @@ font-size: 19px;
                   <img src="<?= base_url('/assets/images/34_ Personal.jpg') ?>" height="40" >
               </a> </li>
             <li class="presonal2 subcribe_expired" style="padding: 10px">
-                <a style="cursor: pointer;"> 
+                <a style="cursor: pointer;">
                     <h5>View Progress</h5>
              <img src="<?= base_url('/assets/images/35_ View Progress.jpg') ?>"  height="40">
             </a></li>
-            <li class="presonal2 subcribe_expired" style="padding: 10px"><a style="cursor: pointer;"> 
+            <li class="presonal2 subcribe_expired" style="padding: 10px"><a style="cursor: pointer;">
                     <h5>Course</h5>
              <img src="<?= base_url('/assets/images/36_Course.jpg') ?>"  height="40" ></a>
             </li>
 
-            <li class="presonal2 subcribe_expired" style="padding: 10px"><a style="cursor: pointer;"> 
+            <li class="presonal2 subcribe_expired" style="padding: 10px"><a style="cursor: pointer;">
                     <h5>Practice</h5>
              <img src="<?= base_url('/assets/images/practice.jpg') ?>"  height="40" ></a>
             </li>
 
-            <li class="presonal2 subcribe_expired" style="padding: 10px;cursor: pointer;"><a id="quick_help_alert"> 
+            <li class="presonal2 subcribe_expired" style="padding: 10px;cursor: pointer;"><a id="quick_help_alert">
                     <h5>Quick Help From Tutor</h5>
              <img src="<?= base_url('/assets/images/quick_help.jpg') ?>" style="height: 40px;width: 50px;position: relative;top: -25px;left: 55px;"></a>
             </li>
@@ -650,24 +664,24 @@ font-size: 19px;
                 <a href="<?php echo base_url(); ?>">
                     <h5>Personal</h5>
                   <img src="<?= base_url('/assets/images/34_ Personal.jpg') ?>" height="40" >
-                </a> 
+                </a>
             </li>
             <li class="presonal2" style="padding: 10px">
-                <a href="<?php echo base_url(); ?>"> 
+                <a href="<?php echo base_url(); ?>">
                     <h5>View Progress</h5>
                     <img src="<?= base_url('/assets/images/35_ View Progress.jpg') ?>"  height="40">
                 </a>
             </li>
-            <li class="presonal2" style="padding: 10px"><a href="<?php echo base_url(); ?>"> 
+            <li class="presonal2" style="padding: 10px"><a href="<?php echo base_url(); ?>">
                     <h5>Course</h5>
              <img src="<?= base_url('/assets/images/36_Course.jpg') ?>"  height="40" ></a>
             </li>
-            <li class="presonal2" style="padding: 10px"><a href="<?php echo base_url(); ?>"> 
+            <li class="presonal2" style="padding: 10px"><a href="<?php echo base_url(); ?>">
                     <h5>Practice</h5>
              <img src="<?= base_url('/assets/images/practice.jpg') ?>"  height="40" ></a>
             </li>
 
-            <li class="presonal2" style="padding: 10px;cursor: pointer;"><a href="<?php echo base_url(); ?>"> 
+            <li class="presonal2" style="padding: 10px;cursor: pointer;"><a href="<?php echo base_url(); ?>">
                     <h5>Quick Help From Tutor</h5>
              <img src="<?= base_url('/assets/images/quick_help.jpg') ?>" style="height: 40px;width: 50px;position: relative;top: -25px;left: 55px;"></a>
             </li>
@@ -675,7 +689,7 @@ font-size: 19px;
 
 
             <!-- shvou -->
-            <?php 
+            <?php
                 if ($user_info[0]['subscription_type'] =="trial") {
                     $createAt = $user_info[0]['created'];
                     $this->load->helper('commonmethods_helper');
@@ -684,9 +698,9 @@ font-size: 19px;
                 }
                 if (isset($days)): ?>
                 <?php if ($days < 1): ?>
-                    <li class="presonal2"><a href="#"> 
+                    <li class="presonal2"><a href="#">
                         Active Subcription
-                    </li> 
+                    </li>
                 <?php endif ?>
             <?php endif ?>
 
@@ -694,7 +708,7 @@ font-size: 19px;
 
 
 <div>
-    <?php if (count($class_rooms) ) { 
+    <?php if (count($class_rooms) ) {
      foreach ($class_rooms as $key => $value) { ?>
         <div class="studentClassroom">
             <div><b>Tutor Information: </b> <span><?= $value[1]; ?></span> </div><br>
@@ -715,9 +729,9 @@ font-size: 19px;
                     </div>
                     <div class="col-md-6" style="margin-left:4px">
                         <label>Your Point: <span style="border: 1px solid #c3c3c3; border-radius:4px; padding: 3px 10px;color:red;font-weight:bold;"><?=($modulePoint->point)?$modulePoint->point:0;?></span></label>
-                    
+
                         <label style="margin-left: 8px;">Target: <span style="border: 1px solid #c3c3c3; border-radius:4px; padding: 3px 10px;"><?= $point->targetPoint ?></span></label>
-                    
+
                     </div>
                 </div>
                 <div class="row" style="width: 95%;margin-top:20px;">
@@ -741,7 +755,7 @@ font-size: 19px;
 </div>
 
 <!-- added AS  -->
-<?php 
+<?php
     $end_subscription = $user_info[0]['end_subscription'];
     if (isset($end_subscription)) {
         $d1 = date('Y-m-d',strtotime($end_subscription));
@@ -761,9 +775,9 @@ font-size: 19px;
         <p class="modal-title" id="exampleModalLabel" style="padding: 5px;font-size: 20px;font-weight: bold;">Cancel Subscription?</p>
         <p style="font-weight: 500;padding: 5px;">
         Your subscription will be cancel at the end of your belling period. After <b><u><?= (isset($r_days))?$r_days:'';?></u></b> days your subscription will end no payment will be taken.<br> Change your mind any time before this date.</p>
-            
+
       </div>
-      
+
     <div class="modal-footer" style="border-bottom: 1px solid #e5e5e5;border-top:none;margin-bottom: 20px;padding: 15px 50px;">
         <button type="button" class="btn btn-danger" id="cancel_subscription_form">Cancel Subscription</button>
         <button type="button" class="btn btn-primary" data-dismiss="modal">Keep Subscription</button>
@@ -924,7 +938,7 @@ font-size: 19px;
             url: '<?php echo site_url('Student/studentsModuleByQStudy'); ?>',
             type: 'POST',
             data: {
-                tutorId , moduleType 
+                tutorId , moduleType
             },
             success: function (response) {
                 if (response != "no module found") {
@@ -936,7 +950,7 @@ font-size: 19px;
         });
     }
 
-    // function q_study_homework_tutor() { 
+    // function q_study_homework_tutor() {
     //     var subjectId = "all";
     //     var tutorId = 2;
     //     var moduleType = 1;
@@ -947,7 +961,7 @@ font-size: 19px;
     //         type: 'POST',
     //         data: {
     //             subjectId , tutorId , moduleType ,  courseId
-    //         }, 
+    //         },
     //         success: function (response) {
     //             if (response != "no module found") {
     //                 $( "#q_study_tutorial" ).css( "display" , "inline-block" );
@@ -956,10 +970,10 @@ font-size: 19px;
     //     });
     // }
 
-    
+
 
 </script>
- 
+
 <?php  foreach ($all_teachers as $key => $value) { ?>
 
     <script type="text/javascript">
@@ -972,7 +986,7 @@ font-size: 19px;
             type: 'POST',
             data: {
                 subjectId , tutorId , moduleType
-            }, 
+            },
             success: function (response) {
                 if (response != "no module found") {
                      showTutorTutorial()
@@ -981,7 +995,7 @@ font-size: 19px;
         });
 
     </script>
-    
+
 <?php } ?>
 
 <?php  foreach ($all_teachers as $key => $value) { ?>
@@ -996,7 +1010,7 @@ font-size: 19px;
             type: 'POST',
             data: {
                 subjectId , tutorId , moduleType
-            }, 
+            },
             success: function (response) {
                 if (response != "no module found") {
                      showTutorEveyday()
@@ -1019,7 +1033,7 @@ font-size: 19px;
             type: 'POST',
             data: {
                 subjectId , tutorId , moduleType
-            }, 
+            },
             success: function (response) {
                 if (response != "no module found") {
                      showTutorspacialExam()
@@ -1042,7 +1056,7 @@ font-size: 19px;
             type: 'POST',
             data: {
                 subjectId , tutorId , moduleType
-            }, 
+            },
             success: function (response) {
                 if (response != "no module found") {
                      showTutorAssignment()
@@ -1098,7 +1112,7 @@ font-size: 19px;
             type: 'POST',
             data: {
                 subjectId , tutorId , moduleType
-            }, 
+            },
             success: function (response) {
                 if (response != "no module found") {
                      showSchoolTutorial()
@@ -1121,7 +1135,7 @@ font-size: 19px;
             type: 'POST',
             data: {
                 subjectId , tutorId , moduleType
-            }, 
+            },
             success: function (response) {
                 if (response != "no module found") {
                      showSchoolEveyday()
@@ -1144,7 +1158,7 @@ font-size: 19px;
             type: 'POST',
             data: {
                 subjectId , tutorId , moduleType
-            }, 
+            },
             success: function (response) {
                 if (response != "no module found") {
                      showSchoolpacialExam()
@@ -1167,7 +1181,7 @@ font-size: 19px;
             type: 'POST',
             data: {
                 subjectId , tutorId , moduleType
-            }, 
+            },
             success: function (response) {
                 if (response != "no module found") {
                      showSchoolAssignment()
@@ -1217,7 +1231,7 @@ font-size: 19px;
             type: 'POST',
             data: {
                 subjectId , tutorId , moduleType
-            }, 
+            },
             success: function (response) {
                 if (response != "no module found") {
                      showCorpotateTutorial()
@@ -1240,7 +1254,7 @@ font-size: 19px;
             type: 'POST',
             data: {
                 subjectId , tutorId , moduleType
-            }, 
+            },
             success: function (response) {
                 if (response != "no module found") {
                      showCorporateEveyday()
@@ -1263,7 +1277,7 @@ font-size: 19px;
             type: 'POST',
             data: {
                 subjectId , tutorId , moduleType
-            }, 
+            },
             success: function (response) {
                 if (response != "no module found") {
                      showCorporatepacialExam()
@@ -1286,7 +1300,7 @@ font-size: 19px;
             type: 'POST',
             data: {
                 subjectId , tutorId , moduleType
-            }, 
+            },
             success: function (response) {
                 if (response != "no module found") {
                      showCorporateAssignment()
