@@ -2,7 +2,7 @@
   .sign_up_menu ul {
     display: none !important;
   }
-  
+
   .select2-container{
     display: initial;
   }
@@ -13,7 +13,7 @@
 
   .search_filter{
     margin-left: 85px;
-    margin-bottom: 0px; 
+    margin-bottom: 0px;
   }
 
   .abc{
@@ -29,8 +29,8 @@
     text-align: center;
     line-height: 42px;
     font-size: 12px;
-}
-<?php  }else{ ?>
+  }
+  <?php  }else{ ?>
     .ss_question_menu li a {
       color: #fff;
       text-decoration: none;
@@ -40,27 +40,28 @@
       line-height: 42px;
       font-size: 12px;
   }
- <?php } ?>
- .question-list-header{
+  <?php } ?>
+  .question-list-header{
     color: #888;
     text-decoration: underline;
     margin-right: 20px;
   font-size: 18px;
- }
- 
- .ss_q_list_top span{
-     display: inline-block;
- }
- .ss_q_list_top input{
-     display: inline-block;
-     width:53%;
- }
- #search_vocubulary_word{
-     display: inline-block;
- }
+  }
+
+  .ss_q_list_top span{
+      display: inline-block;
+  }
+  .ss_q_list_top input{
+      display: inline-block;
+      width:53%;
+  }
+  #search_vocubulary_word{
+      display: inline-block;
+  }
 </style>
 
-<div class="row"> 
+
+<div class="row">
   <?//php if($_SESSION['userType']== 7 ){?>
   <!-- <div class="col-md-12 upperbutton" style="text-align: center;margin-bottom: 10px;">
      <a href="all-module" style="font-size:20px;font-weight: bold;">Module Inbox</a>
@@ -76,7 +77,7 @@
       <?php if ($subscription_type != 'data_input') { ?>
             <!--<a class="ss_q_link pull-left" href="q-dictionary/search">Q- Dictionary</a>
             <a style="color:#4BBCC0; background-color: #fff; font-size: 15px;" class="ss_q_link pull-left" href="subject/all">Delete Subject & Chapter</a> -->
-      
+
        <a  class="pull-left question-list-header" href="q-dictionary/search">Q- Dictionary</a>
             <!-- <a  class="pull-left question-list-header" href="subject/all">Delete Subject & Chapter</a> -->
       <?php if($_SESSION['userType']== 7 ){?>
@@ -84,7 +85,7 @@
       <?php }?>
       <?php  } ?>
 
-      
+
     </div>
   </div>
 </div>
@@ -93,7 +94,7 @@
   <!-- <div class="col-sm-2"></div> -->
   <div class="col-sm-12 ">
     <?php if ($this->session->flashdata('success_msg')) : ?>
-      <div class="alert alert-warning alert-dismissible fade in" role="alert"> 
+      <div class="alert alert-warning alert-dismissible fade in" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -113,8 +114,8 @@
                 <input type="text" value="<?php echo $modName; ?>" class="form-control" name="moduleName" style="width:130px;" id="moduleName">
               </div>
             </div>
-            
-            <?php if ($_SESSION['userType']==7) : ?>                 
+
+            <?php if ($_SESSION['userType']==7) : ?>
             <div class="form-group">
               <label for="exampleInputName2">Country</label>
                <div class="select">
@@ -192,7 +193,7 @@
               </div>
             </div>
 
-            <?php if ($_SESSION['userType']==7) : ?>     
+            <?php if ($_SESSION['userType']==7) : ?>
             <div class="form-group">
               <label for="exampleInputEmail2">Course</label>
               <div class="select">
@@ -208,7 +209,7 @@
               </div>
             </div>
             <?php endif; ?>
-            
+
             <div class="form-group"  style="width:0px !important">
               <button type="submit" class="btn btn-primary" style="margin-top:20px !important">search</button>
             </div>
@@ -218,7 +219,7 @@
 
         <div class="row ss_q_list_top">
           <div class="col-md-5" id="">
-              <span>Quiz</span>    
+              <span>Quiz</span>
               <?php if($_SESSION['userType']== 7 ){?>
                   <input type="text" name="search" id="search" class="form-control search_input">
                   <button class="btn btn-primary" type="button" id="search_vocubulary_word">Search</button>
@@ -234,13 +235,13 @@
     <div class="ss_question_list">
      <!--  <ul class="add_duplicate"> </ul> -->
      <?php  if (!empty($edit_has)) { ?>
-        <?php foreach ($all_question_type as $key) { $a = $key["id"]; 
+        <?php foreach ($all_question_type as $key) { $a = $key["id"];
           if($a!=5 || $a!=7 || $a!=8 || $a!=9){
           ?>
 
         <div class="row">
           <div class="col-sm-3">
-            <ul class="ss_q_left"> 
+            <ul class="ss_q_left">
               <li>
                 <a href="<?php echo base_url();?>create-question/<?=$key['id']?>"><?php echo $key['questionType'];?></a>
               </li>
@@ -249,13 +250,13 @@
 
           <div class="col-sm-9">
 
-          
+
               <ul class="ss_question_menu" id="quesType_<?php echo $key['id'];?>">
               <?php $i = 1; $b =1;
-              
+
               foreach ($all_question[$key['id']] as $row) {
 
-                // print_r($key['id']); echo "string"; print_r($row['id']); 
+                // print_r($key['id']); echo "string"; print_r($row['id']);
 
                   $color = $row['dictionary_item']?'#ED1C24':'';?>
 
@@ -266,11 +267,11 @@
                   display: none;<?php }?>" data-id="<?=$key['id']?>_<?=$row['id']?>" id="q_<?=$i?>_<?=$key['id']?>" >
                   <a href="question_edit/<?=$key['id']?>/<?=$row['id']?>">Q<?=$i?></a>
 
-                </li> 
+                </li>
                     <?php $i++; }
-                    
+
                     if (!empty($old_ques_order)) { ?>
-                     
+
 
                       <?php
 
@@ -282,8 +283,8 @@
 
                             <div class="add_duplicated_<?php echo $val3["question_type"]; echo "_"; echo $b; ?>" ></div>
 
-                            <li class="abc" <?php if ($b >5) { ?> style="display: none; <?php } ?>" style="background-color:#E3AB16;" datas-id="<?=$a ?>_<?=$val3['id']?>" id="q1_<?=$b?>_<?=$key['id']?>"> 
-                              <a href="question_edit/<?=$a?>/<?=$val3['id']?>" style="position: relative;">Q<?=($val3["order"]+1); ?> <span style="left:0; color: red;position: absolute;top:-27px; font-size: 12px; width: 100%;"><?php echo $b; ?></span></a> 
+                            <li class="abc" <?php if ($b >5) { ?> style="display: none; <?php } ?>" style="background-color:#E3AB16;" datas-id="<?=$a ?>_<?=$val3['id']?>" id="q1_<?=$b?>_<?=$key['id']?>">
+                              <a href="question_edit/<?=$a?>/<?=$val3['id']?>" style="position: relative;">Q<?=($val3["order"]+1); ?> <span style="left:0; color: red;position: absolute;top:-27px; font-size: 12px; width: 100%;"><?php echo $b; ?></span></a>
                              </li>
                             </li>
                           <?php $b++;
@@ -316,34 +317,34 @@
                   </li>
                 <?php }?>
               </ul>
-      
+
 
             </div>
           </div>
 
         <?php } }?>
       <?php }else {
-        
+
         ?>
-        <?php foreach ($all_question_type as $key) { $a = $key["id"]; 
+        <?php foreach ($all_question_type as $key) { $a = $key["id"];
           if($key['id'] !=5 && $key['id'] !=7 && $key['id'] !=8 && $key['id'] !=9){
 
           ?>
           <?php if($key['id'] != 12){?>
         <div class="row">
           <div class="col-sm-3">
-            <ul class="ss_q_left">  
+            <ul class="ss_q_left">
               <li>
-                
+
                 <a href="<?php echo base_url();?>create-question/<?=$key['id']?>"><?php echo $key['questionType'];?></a>
-                
+
               </li>
             </ul>
           </div>
 
           <div class="col-sm-9">
 
-          
+
               <ul class="ss_question_menu" id="quesType_<?php echo $key['id'];?>">
               <?php $i = 1; $b =1;
               //////////////// echo "<pre>";print_r($all_question[3]);die();
@@ -351,7 +352,7 @@
                 $permission_check_id = $row['id'];
                 $qus_check = $this->db->where('qustion_id',$permission_check_id)->get('send_qustion_by_tutor')->result_array();
 
-                // print_r($key['id']); echo "string"; print_r($row['id']); 
+                // print_r($key['id']); echo "string"; print_r($row['id']);
 
                   $color = $row['dictionary_item']?'#ED1C24':';';?>
 
@@ -362,11 +363,11 @@
                   display: none;<?php }?>" data-id="<?=$key['id']?>_<?=$row['id']?>" id="q_<?=$i?>_<?=$key['id']?>" >
                   <a href="question_edit/<?=$key['id']?>/<?=$row['id']?>">Q<?=$i?></a>
 
-                </li> 
+                </li>
                     <?php $i++; }
-                    
+
                     if (!empty($old_ques_order)) { ?>
-                     
+
 
                       <?php
 
@@ -378,8 +379,8 @@
 
                             <div class="add_duplicated_<?php echo $val3["question_type"]; echo "_"; echo $b; ?>" ></div>
 
-                            <li class="abc" <?php if ($b >10) { ?> style="display: none; <?php } ?>" style="background-color:#E3AB16;" datas-id="<?=$a ?>_<?=$val3['id']?>" id="q1_<?=$b?>_<?=$key['id']?>"> 
-                              <a href="question_edit/<?=$a?>/<?=$val3['id']?>" style="position: relative;">Q<?=($val3["order"]+1); ?> <span style="left:0; color: red;position: absolute;top:-27px; font-size: 12px; width: 100%;"><?php echo $b; ?></span></a> 
+                            <li class="abc" <?php if ($b >10) { ?> style="display: none; <?php } ?>" style="background-color:#E3AB16;" datas-id="<?=$a ?>_<?=$val3['id']?>" id="q1_<?=$b?>_<?=$key['id']?>">
+                              <a href="question_edit/<?=$a?>/<?=$val3['id']?>" style="position: relative;">Q<?=($val3["order"]+1); ?> <span style="left:0; color: red;position: absolute;top:-27px; font-size: 12px; width: 100%;"><?php echo $b; ?></span></a>
                              </li>
                             </li>
                           <?php $b++;
@@ -412,13 +413,13 @@
                   </li>
                 <?php }?>
               </ul>
-      
+
 
             </div>
           </div>
           <?php }?>
         <?php } }?>
-    <?php  } ?>  
+    <?php  } ?>
       </div>
     </div>
 
@@ -439,7 +440,7 @@
           <div id="qPasswordErr" style="color: red;font-weight: 800"></div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn_blue" onclick="qPassword()">Submit</button>        
+          <button type="button" class="btn btn_blue" onclick="qPassword()">Submit</button>
         </div>
       </div>
     </div>
@@ -609,7 +610,7 @@
       <script type="text/javascript">
         for (var i = 1; i <= 12; i++) {
           $('#quesType_'+i).contextMenu({
-            selector: 'li.abc', 
+            selector: 'li.abc',
             callback: function(key, options) {
                // qstudyPassword
              var li_item = $(this);
@@ -632,7 +633,7 @@
                 <?php }else{ ?>
 
                   // qstudyPassword
-      
+
                 $.ajax({
                   url: "question_delete/"+qId,
                   method : 'POST',
@@ -650,14 +651,14 @@
                 method : 'POST',
                 data:{qId:qId , user_id:user_id },
                 success: function(data){
-                  
+
                   data = JSON.parse(data);
 
 
                   $(".add_duplicated_"+data[0]["questionType"]+"_1").append("<div> "+data[0]["element"]+"</div>");
                     // alert('Question duplicated successfully.');
-    
-                  
+
+
                  //  if(data=='true'){
                  //   // alert('Question duplicated successfully.');
                  //   // location.reload();
@@ -675,7 +676,7 @@
                 success: function(data){
 
                   alert('Question Send Successfully.'); location.reload();
-                  
+
                 }
               })
              }
@@ -713,14 +714,14 @@
 
       <script type="text/javascript">
         /*context menu (right click on question menu)*/
-      
+
       for (var i = 1; i <= 22; i++) {
-       
+
       if( i !=12) {
         if( i !=13) {
         if($('#quesType_'+i).length){
         $('#quesType_'+i).contextMenu({
-          selector: 'li.main_li', 
+          selector: 'li.main_li',
           callback: function(key, options) {
             // qstudyPassword
             var li_item = $(this);
@@ -741,7 +742,7 @@
               <?php  if ($user_info[0]['user_type'] ==7 ) { ?>
 
                   <?php if(count($checkNullPw) == 0) { ?>
-                 
+
                     $.ajax({
                       url: "question_delete/"+qId,
                       method : 'POST',
@@ -756,7 +757,7 @@
                 <?php }else{ ?>
 
                   // qstudyPassword
-           
+
                 $.ajax({
                   url: "question_delete/"+qId,
                   method : 'POST',
@@ -776,14 +777,14 @@
               success: function(data){
 
                 alert('Question duplicated successfully.'); location.reload();
-                
+
                 // data = JSON.parse(data);
 
 
                 // $(".add_duplicated_"+data[0]["questionType"]+"_1").append("<div> "+data[0]["element"]+"</div>");
                   // alert('Question duplicated successfully.');
-  
-                
+
+
                //  if(data=='true'){
                //   // alert('Question duplicated successfully.');
                //   // location.reload();
@@ -801,7 +802,7 @@
               success: function(data){
 
                 alert('Question Send Successfully.'); location.reload();
-                
+
               }
             })
            }
@@ -816,7 +817,7 @@
             "send_to_qStudy": {name: "Send To Q-Study", icon: "fa-paper-plane"},
           <?php  } ?>
         }
-        
+
 
       });
     }
@@ -864,7 +865,7 @@
             deleteQuestion()
             $("#qPasswordErr").html("")
             $("#ss_info_sucesss").modal("toggle")
-            
+
           }
         }
       })
@@ -881,7 +882,7 @@
               qType = temp[0]
               // console.log(qType);
               var user_id = <?php print_r($user_id); ?>;
-          
+
 
       $.ajax({
           url: "question_delete/"+qId,
@@ -892,19 +893,19 @@
           }
         })
     }
-    
+
      $(document).ready(function(){
         $('#search_vocubulary_word').click(function(){
             var search = $('#search').val();
             $.ajax({
               url: "Tutor/search_vocubulary_word",
-              method : 'POST', 
+              method : 'POST',
               data:{'search':search},
               success: function(data){
                 $('#search_vocubulary_list').html(data);
-                
+
                 $('#v_quesType_3').contextMenu({
-                      selector: 'li.main_li', 
+                      selector: 'li.main_li',
                       callback: function(key, options) {
                         // qstudyPassword
                         var li_item = $(this);
@@ -923,7 +924,7 @@
                         }else if(key=='delete'){
                           <?php  if ($user_info[0]['user_type'] ==7 ) { ?>
                               <?php if(count($checkNullPw) == 0) { ?>
-                             
+
                                 $.ajax({
                                   url: "question_delete/"+qId,
                                   method : 'POST',
@@ -937,7 +938,7 @@
                               <?php } ?>
                             <?php }else{ ?>
                               // qstudyPassword
-                              
+
                             $.ajax({
                               url: "question_delete/"+qId,
                               method : 'POST',
@@ -946,9 +947,9 @@
                                 else{ alert('Somethings wrong.'); }
                               }
                             })
-            
+
                             <?php } ?>
-            
+
                         }else if(key=='duplicate'){
                          $.ajax({
                           url:"<?php echo base_url(); ?>question_duplicate",
@@ -979,12 +980,12 @@
                         "send_to_qStudy": {name: "Send To Q-Study", icon: "fa-paper-plane"},
                       <?php  } ?>
                     }
-            
+
                   });
               }
             })
         })
-        
-        
+
+
     })
   </script>
