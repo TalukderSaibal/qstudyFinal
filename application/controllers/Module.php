@@ -6,7 +6,7 @@ class Module extends CI_Controller
 {
 
     public $loggedUserId, $loggedUserType;
- 
+
 
     public function __construct()
     {
@@ -20,7 +20,7 @@ class Module extends CI_Controller
         if ($user_id == null && $user_type == null) {
             redirect('welcome');
         }
-        
+
         $this->load->model('Parent_model');
         $this->load->model('Admin_model');
         $this->load->model('tutor_model');
@@ -32,13 +32,13 @@ class Module extends CI_Controller
         $this->load->model('Preview_model');
         $this->load->model('QuestionModel');
         $this->load->helper('CommonMethods');
-        
+
         $user_info = $this->Preview_model->userInfo($user_id);
-        
+
         if ($user_info[0]['countryCode'] == 'any') {
             $user_info[0]['zone_name'] = 'Australia/Lord_Howe';
         }
-        
+
         $this->site_user_data = array(
             'userType' => $user_type,
             'zone_name' => $user_info[0]['zone_name'],
@@ -58,7 +58,7 @@ class Module extends CI_Controller
     }//end view_course()
 
 
-    
+
     /**
      * Responsible for viewing module types(tutorial, everyday study, assignment).
      *
@@ -83,13 +83,13 @@ class Module extends CI_Controller
         }
         $loggedStudentId  = $this->loggedUserId;
         $studentsTutor = $this->Student_model->allTutor($loggedStudentId);
-        
+
         //all tutor ids of a student
         $allTutorIds = array_column($studentsTutor, 'id');
         //all tutor ids of a student filtered down by module type
         // $data['allTutors'] = $this->Student_model->allTutorByModuleType($moduleType, $allTutorIds);
         $all_parents = $this->Student_model->all_assigners_new($loggedStudentId);
-                
+
         $data['module_type'] = $moduleType;
         $i = 0;
         $allTutor = array();
@@ -119,7 +119,7 @@ class Module extends CI_Controller
 
 
         $data['allTutors'] = $allTutor;
-        
+
         $data['module_type'] = $moduleType;
         $data['headerlink'] = $this->load->view('dashboard_template/headerlink', '', true);
         $data['header']     = $this->load->view('dashboard_template/header', '', true);
@@ -128,7 +128,7 @@ class Module extends CI_Controller
         $data['maincontent'] = $this->load->view('module/tutor_list', $data, true);
         $this->load->view('master_dashboard', $data);
     }
-    
+
     public function all_module()
     {
         $_SESSION['prevUrl'] = $_SERVER['HTTP_REFERER'];
@@ -138,7 +138,7 @@ class Module extends CI_Controller
             }else{
                 $_SESSION['prevUrl'] = base_url('/qstudy/view_course/');
             }
-        }  
+        }
 
         $data['video_help'] = $this->FaqModel->videoSerialize(25, 'video_helps'); //rakesh
         $data['video_help_serial'] = 25;
@@ -172,7 +172,7 @@ class Module extends CI_Controller
         }
         //$_SESSION['modInfo']['country'] = isset($_GET['country']) ? $_GET['country'] : '';
 
-        
+
         $data['all_grade']          = $this->tutor_model->getAllInfo('tbl_studentgrade');
         $data['all_module_type']    = $this->tutor_model->getAllInfo('tbl_moduletype');
 
@@ -182,16 +182,16 @@ class Module extends CI_Controller
         //echo "<pre>";print_r($data['all_subject']);die();
 
         $data['allCountry']  = $this->admin_model->search('tbl_country', [1=>1]);
- 
+
         //$studentIds          = $this->tutor_model->allStudents(['sct_id' => $user_id]);
         //$data['allStudents'] = $this->renderStudentIds($studentIds);
-        
+
          // check password added shvou
         $data['checkNullPw'] = $this->db->where("setting_key", "qstudyPassword")->where("setting_type !=", '')->get('tbl_setting')->result_array();
         $data['maincontent'] = $this->load->view('module/all_module', $data, true);
         $this->load->view('master_dashboard', $data);
     }
-    
+
     //end all_module()
 
     /**
@@ -212,7 +212,7 @@ class Module extends CI_Controller
         }
 
         $post = $this->input->post();
-        
+
         $module = $this->ModuleModel->moduleInfo($moduleId);
         if (!sizeof($module)) {
             $this->session->set_flashdata('error_msg', 'Module not exists.');
@@ -223,7 +223,7 @@ class Module extends CI_Controller
         $data['loggedUserType'] = $this->loggedUserType;
         $data['user_info']      = $this->tutor_model->userInfo($user_id);
         $data['module_info']    = $module;
-        
+
         if (!$post) {
             $sl_date = json_decode($module['repetition_days']);
             $data['selectedSl'] = [];
@@ -232,14 +232,14 @@ class Module extends CI_Controller
                 $temp = explode('_', $item);
                 $data['selectedSl'][] = $temp[0];
             }
-            
+
             $data['headerlink'] = $this->load->view('dashboard_template/headerlink', $data, true);
             $data['header']     = $this->load->view('dashboard_template/header', $data, true);
             $data['footerlink'] = $this->load->view('dashboard_template/footerlink', '', true);
             $data['maincontent']  = $this->load->view('module/set_module_repetition_days', $data, true);
             $this->load->view('master_dashboard', $data);
         } else {
-            
+
             $dataToUpdate[] = [
                 'id'              =>$moduleId,
                 'repetition_days' => json_encode($post['sl_date'])
@@ -250,7 +250,7 @@ class Module extends CI_Controller
             redirect('module/repetition/'.$moduleId);
         }
     }
-    
+
 
     /**
      * Add module (view part)
@@ -259,7 +259,7 @@ class Module extends CI_Controller
      */
     public function add_module()
     {
-       
+
         if(array_key_exists("HTTP_REFERER",$_SERVER)){
             $_SESSION['prevUrl'] = $_SERVER['HTTP_REFERER'];
         }else{
@@ -283,7 +283,7 @@ class Module extends CI_Controller
         $data['headerlink'] = $this->load->view('dashboard_template/headerlink', $data, true);
         $data['header']     = $this->load->view('dashboard_template/header', $data, true);
         $data['footerlink'] = $this->load->view('dashboard_template/footerlink', '', true);
-        
+
         $selected_id = '';
         if ($this->loggedUserType != 7) {
             $selected_id = $data['user_info'][0]['country_id'];
@@ -292,22 +292,22 @@ class Module extends CI_Controller
         $data['all_module']        = $this->tutor_model->getInfo('tbl_module', 'user_id', $user_id);
         $data['all_module_type']   = $this->tutor_model->getAllInfo('tbl_moduletype');
         $data['all_course']        = $this->tutor_model->getAllInfo('tbl_course');
-        
+
         $data['all_country']       = $this->renderAllCountry($selected_id);
         $data['all_subjects']      = $this->renderAllSubject();
         $data['all_chapters']      = $this->renderAllChapter();
         $data['all_module_type']   = $this->renderAllModuleType();
-        
+
         $data['all_question_type'] = $this->tutor_model->getAllInfo('tbl_questiontype');
         foreach ($data['all_question_type'] as $row) {
             $question_list[$row['id']] = $this->tutor_model->getUserQuestion('tbl_question', $row['id'], $user_id);
         }
-  
+
         $data['all_question'] = $question_list;
         $studentIds = $this->tutor_model->allStudents(['sct_id' => $user_id]);
         //echo "<pre>"; print_r($studentIds);die;
         $data['allStudents']  = $this->renderStudentIds($studentIds);
-        
+
         $data['maincontent']  = $this->load->view('module/add_module', $data, true);
         $this->load->view('master_dashboard', $data);
     }//end add_module()
@@ -318,13 +318,13 @@ class Module extends CI_Controller
         $student_grade = $this->input->post('studentGrade');
         $country_id = $this->input->post('country_id');
         $user_id = $this->session->userdata('user_id');
-        
+
         $students = $this->ModuleModel->getStudentByGradeCountry($student_grade, $country_id, $user_id);
         foreach ($students as $row) {
             echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
         }
     }
-    
+
     public function get_course()
     {
         $student_grade = $this->input->post('studentGrade');
@@ -339,7 +339,7 @@ class Module extends CI_Controller
         }
         echo $html;
     }
-    
+
     public function getIndividualStudent()
     {
 
@@ -357,7 +357,7 @@ class Module extends CI_Controller
         $user_id = '';
         $subject_name = '';
         $course_id = '';
-        
+
         if (($this->input->post('course_id'))) {
             $course_id = $this->input->post('course_id');
         }
@@ -373,7 +373,7 @@ class Module extends CI_Controller
         }if ($tutor_type == 3) {
             $user_id = $this->session->userdata('user_id');
         }
-        
+
         $students = $this->ModuleModel->getIndividualStudent($student_grade, $tutor_type, $country_id, $subject_name, $user_id, $course_id);
         foreach ($students as $row) {
             echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
@@ -404,10 +404,10 @@ class Module extends CI_Controller
 
         $startTime = date('Y-m-d', strtotime($date)).' '.$post['startTime'];
         $endTime = date('Y-m-d', strtotime($date)).' '.$post['endTime'];
-        
+
         $video_link = str_replace('</p>', '', $_POST['video_link']);
         $video_array = array_filter(explode('<p>', $video_link));
-        
+
         $new_array = array();
         foreach ($video_array as $row) {
             $new_array[] = strip_tags($row);
@@ -420,7 +420,7 @@ class Module extends CI_Controller
         $optionalTime      = explode(':', isset($clean['optTime']) ? $clean['optTime'] : "0:0");
         $optionalHour      = isset($optionalTime[0]) ? (int)$optionalTime[0]*60*60 : 0; //second
         $optionalMinute    = isset($optionalTime[1]) ? (int)$optionalTime[1]*60    : 0; //second
-        
+
         //get users latest module order
         $mods = $this->Admin_model->search('tbl_module', ['user_id'=>$this->loggedUserId]);
         if (count($mods)) {
@@ -465,7 +465,7 @@ class Module extends CI_Controller
         // If ques order set record those to tbl_modulequestion table
         $arr   = [];
         $items = isset($clean['qId_ordr']) ? array_filter($clean['qId_ordr']) : [];
-        
+
         if (count($items)) {
             foreach ($items as $qId_ordr) {
                 $temp  = explode('_', $qId_ordr);
@@ -483,7 +483,7 @@ class Module extends CI_Controller
         }
 
         //no need to save module<=>student ids as the student ids storing with module
-        
+
         //Save individual student/all student ids on tbl_module_student table
         /*$dataToInsert = [];
         if(isset($clean['isAllStudent'])){
@@ -515,12 +515,12 @@ class Module extends CI_Controller
                 if ($j == 362) {
                     break;
                 }
-            } 
+            }
 
             $repetition_days = json_encode($a);
             $this->db->where('id',$module_insert_id)->update('tbl_module',['repetition_days' => $repetition_days]);
         }
-        
+
         if ($moduleId) {
             echo $moduleId;
             // Module recorded.
@@ -558,14 +558,14 @@ class Module extends CI_Controller
         $optionalTime      = explode(':', isset($post['optTime'])?$post['optTime']:"0:0");
         $optionalHour      = isset($optionalTime[0]) ? (int)$optionalTime[0]*60*60 : 0; //second
         $optionalMinute    = isset($optionalTime[1]) ? (int)$optionalTime[1]*60    : 0; //second
-        
+
         $newMod = $this->security->xss_clean($post);
         // echo '<pre>';print_r($newMod);die;
         $origModId  = $newMod['origModId'];
         $origMod    = $this->ModuleModel->moduleInfo($origModId);
-        
+
         // $module_info =  $this->ModuleModel->moduleTypeBasedInfo($moduleType);
-        
+
         // echo $origMod['ordering'];
         // print_r($origMod);die();
 
@@ -611,7 +611,7 @@ class Module extends CI_Controller
 
 
         // echo '<pre>';echo $subject;echo "<br>";echo $chapter; die;
-        
+
         $newModName = isset($newMod['moduleName']) ? $newMod['moduleName'] : '';
         //if country name or student grade changed only then same module name permissible
         if ($newModName == $origMod['moduleName'] /*&& $origMod['country'] == $newMod['country']*/ && $origMod['studentGrade'] == $newMod['studentGrade']) {
@@ -640,7 +640,7 @@ class Module extends CI_Controller
                 'exam_end'          => isset($endTime) ? ($endTime) : $origMod['exam_end'],
                 'optionalTime'      => isset( $optionalHour )  ? ( $optionalHour+$optionalMinute ) : $origMod['optionalTime'],
             ];
-            
+
             // echo '<pre>';print_r($moduleTableData);die;
             // Save module info first
             $newModuleId = $this->ModuleModel->insert('tbl_module', $moduleTableData);
@@ -668,14 +668,14 @@ class Module extends CI_Controller
         }//end if
     }//end moduleDuplicate()
 
-    
+
     public function editModule($moduleId)
     {
         $_SESSION['prevUrl'] = $_SERVER['HTTP_REFERER'];
         $data['video_help'] = $this->FaqModel->videoSerialize(26, 'video_helps'); //rakesh
         $data['video_help_serial'] = 26;
 
-        $_SESSION["moduleId"] = $moduleId; 
+        $_SESSION["moduleId"] = $moduleId;
         $uType = $this->loggedUserType;
         if ($uType==1 || $uType==2 || $uType==6) {
             //user type parent, upper student,student shouldn't add module
@@ -686,7 +686,7 @@ class Module extends CI_Controller
         $this->session->unset_userdata('data');
         $this->session->unset_userdata('obtained_marks');
         $this->session->unset_userdata('total_marks');
-        
+
         $user_id                = $this->session->userdata('user_id');
         $data['loggedUserType'] = $this->loggedUserType;
         $data['user_info']      = $this->tutor_model->userInfo($user_id);
@@ -701,7 +701,7 @@ class Module extends CI_Controller
             $module['chapter'] = $chaps;
             $this->session->set_userdata('modInfo', $module);
         }
-        
+
         if ($module['studentGrade'] <= 12) {
             $data['get_course'] = $this->ModuleModel->getInfo('tbl_course', 'user_type', 1);
         } else {
@@ -735,14 +735,14 @@ class Module extends CI_Controller
         $data['instruction_video'] = json_decode($data['module_info']['video_link']);
         $data['instruction_video'] = (is_array($data['instruction_video']) && count($data['instruction_video'])) ? $data['instruction_video'][0] : '';
         $data['ins'] = $data["module_info"]["instruction"];
-        
+
         foreach ($data['all_question_type'] as $row) {
             $question_list[$row['id']] = $this->tutor_model->getUserQuestion('tbl_question', $row['id'], $user_id);
         }
         $data['all_question'] = $question_list;
-        
+
         $indivStdIds          = $module['individualStudent'];
-        
+
         if ($this->loggedUserType==7) { //q-stydy need this kinda filter
             $conditions = [
                 'subject_name'   =>$module['subject'],
@@ -764,7 +764,7 @@ class Module extends CI_Controller
 
     public function updateRequestedModule()
     {
-        
+
         $uType = $this->loggedUserType;
         if ($uType==1 || $uType==2 || $uType==6) {
             //user type parent, upper student,student shouldn't add module
@@ -773,18 +773,18 @@ class Module extends CI_Controller
         }
 
         $post = $this->input->post();
-        
+
         $date = $post['dateCreated'];
         $startTime = date('Y-m-d', strtotime($date)).' '.$post['startTime'];
         $endTime = date('Y-m-d', strtotime($date)).' '.$post['endTime'];
-        
+
         $video_link = str_replace('</p>', '', $_POST['video_link']);
         $video_array = array_filter(explode('<p>', $video_link));
         $new_array = array();
         foreach ($video_array as $row) {
             $new_array[] = strip_tags($row);
         }
-        
+
         $optionalTime      = explode(':', isset($post['optTime'])?$post['optTime']:"0:0");
         $optionalHour      = isset($optionalTime[0]) ? (int)$optionalTime[0]*60*60 : 0; //second
         $optionalMinute    = isset($optionalTime[1]) ? (int)$optionalTime[1]*60    : 0; //second
@@ -923,7 +923,7 @@ public function save_module_order()
         $post = $this->input->post();
         $post = array_filter($post);
         $success['success'] = 0;
-        $success['msg']     = 'Order Update Failed!';  
+        $success['msg']     = 'Order Update Failed!';
         if(isset($post['modId']) && $post['modId'] != '')
         {
             $order = 1;
@@ -935,9 +935,9 @@ public function save_module_order()
                 $order++;
             }
 
-         $success['success'] = 1; 
-         $success['msg']     = 'Successfully Order Updated.'; 
-         
+         $success['success'] = 1;
+         $success['msg']     = 'Successfully Order Updated.';
+
         }
 
         if(isset($post['subjectId']) && $post['subjectId'] != '')
@@ -951,14 +951,14 @@ public function save_module_order()
                 $order++;
             }
 
-         $success['success'] = 1; 
-         $success['msg']     = 'Successfully Order Updated.'; 
-       
+         $success['success'] = 1;
+         $success['msg']     = 'Successfully Order Updated.';
+
         }
 
 
         echo json_encode($success);
-       die; 
+       die;
     }
 
 public function moduleSearchFromReorder()
@@ -1003,7 +1003,7 @@ public function renderReorderModule($modules = [])
             $this->session->set_flashdata('error_msg', "You've no access to view this page");
             redirect('/');
         }
-        
+
         $post  = $this->input->post();
         $clean = $this->security->xss_clean($post);
 
@@ -1074,12 +1074,12 @@ public function renderReorderModule($modules = [])
     {
         $option    = '';
         $option   .= '<option value="">--Country--</option>';
-        
+
         $countries = $this->tutor_model->getAllInfo('tbl_country');
         if ($this->loggedUserType != 7) {
             $countries = $this->tutor_model->getInfo('tbl_country', 'id', $this->site_user_data['country_id']);
         }
-        
+
         foreach ($countries as $country) {
             $sel     = ($country['id'] == $selectedId) ? 'selected' : '';
             $option .= '<option value="'.$country['id'].'" '.$sel.'>'.$country['countryName'].'</option>';
@@ -1163,7 +1163,7 @@ public function renderReorderModule($modules = [])
             $maxOrder = max($maxOrder, $moduleOrder);
 
             $checked = ($module['ordering'])?"checked":"";
-            
+
             $row .= '<tr id="'.$module['id'].'">';
             $row .= '<td>'.date('d-M-Y', $module['exam_date']).'</td>';
             $row .= '<td id="modName">'.$module['moduleName'].'</td>';
@@ -1193,25 +1193,30 @@ public function renderReorderModule($modules = [])
     }
 
 
-    public function module_preview($modle_id, $question_order_id)
-    {
+    public function module_preview($modle_id, $question_order_id){
 
-        $data['order'] = $this->uri->segment('3'); 
-        $_SESSION['q_order'] = $this->uri->segment('3'); 
-        $_SESSION['q_order_module'] = $this->uri->segment('2'); 
+        // echo 'hi';die;
 
-        $data['user_info']  = $this->tutor_model->userInfo($this->session->userdata('user_id'));
-        $data['userType'] = $data['user_info'][0]['user_type'];
+        $data['order']              = $this->uri->segment('3');
+        $_SESSION['q_order']        = $this->uri->segment('3');
+        $_SESSION['q_order_module'] = $this->uri->segment('2');
+
+        $data['user_info'] = $this->tutor_model->userInfo($this->session->userdata('user_id'));
+        $data['userType']  = $data['user_info'][0]['user_type'];
+
         date_default_timezone_set($this->site_user_data['zone_name']);
+
         $exact_time = time();
         $this->session->set_userdata('exact_time', $exact_time);
-        
+
         $data['question_info_s'] = $this->tutor_model->getModuleQuestion($modle_id, $question_order_id, null);
         $data['main_module'] = $this->tutor_model->getInfo('tbl_module', 'id', $modle_id);
-        // print_r($data['question_info_s']); 
-        
+
+        // echo '<pre>';
+        // print_r($data['question_info_s']);die;
+
         $data['total_question'] = $this->tutor_model->getModuleQuestion($modle_id, null, 1);
-        
+
         $data['page_title']     = '.:: Q-Study :: Tutor yourself...';
         $data['headerlink']     = $this->load->view('dashboard_template/headerlink', $data, true);
         $data['header']         = $this->load->view('dashboard_template/header', $data, true);
@@ -1226,27 +1231,27 @@ public function renderReorderModule($modules = [])
 
         if (isset($data['question_info_s'][0])) {
             $quesInfo = json_decode($data['question_info_s'][0]['questionName']);
-            
+
             if ($data['question_info_s'][0]['questionType'] == 1) {
-                $_SESSION['q_order_2'] = $this->uri->segment('3'); 
+                $_SESSION['q_order_2'] = $this->uri->segment('3');
                 $data['maincontent'] = $this->load->view('module/preview/preview_general', $data, true);
             } elseif ($data['question_info_s'][0]['questionType'] == 2) {
-                $_SESSION['q_order_2'] = $this->uri->segment('3'); 
+                $_SESSION['q_order_2'] = $this->uri->segment('3');
                 $data['maincontent'] = $this->load->view('module/preview/preview_true_false', $data, true);
             } elseif ($data['question_info_s'][0]['questionType'] == 3) {
-                $_SESSION['q_order_2'] = $this->uri->segment('3'); 
+                $_SESSION['q_order_2'] = $this->uri->segment('3');
                 $data['question_info_vcabulary'] = json_decode($data['question_info_s'][0]['questionName']);
                 $data['maincontent']             = $this->load->view('module/preview/preview_vocabulary', $data, true);
             } elseif ($data['question_info_s'][0]['questionType'] == 4) {
-                $_SESSION['q_order_2'] = $this->uri->segment('3'); 
+                $_SESSION['q_order_2'] = $this->uri->segment('3');
                 $data['question_info_vcabulary'] = $quesInfo;
                 $data['maincontent']             = $this->load->view('module/preview/preview_multiple_choice', $data, true);
             } elseif ($data['question_info_s'][0]['question_type'] == 5) {
-                $_SESSION['q_order_2'] = $this->uri->segment('3'); 
+                $_SESSION['q_order_2'] = $this->uri->segment('3');
                 $data['question_info_vcabulary'] = json_decode($data['question_info_s'][0]['questionName']);
                 $data['maincontent'] = $this->load->view('module/preview/preview_multiple_response', $data, true);
             } elseif ($data['question_info_s'][0]['questionType'] == 6) {
-                $_SESSION['q_order_2'] = $this->uri->segment('3'); 
+                $_SESSION['q_order_2'] = $this->uri->segment('3');
                 // skip quiz
                 $data['numOfRows']    = isset($quesInfo->numOfRows) ? $quesInfo->numOfRows : 0;
                 $data['numOfCols']    = isset($quesInfo->numOfCols) ? $quesInfo->numOfCols : 0;
@@ -1258,12 +1263,12 @@ public function renderReorderModule($modules = [])
                 $data['skp_box']     = renderSkpQuizPrevTable($items, $data['numOfRows'], $data['numOfCols']);
                 $data['maincontent'] = $this->load->view('module/preview/skip_quiz', $data, true);
             } elseif ($data['question_info_s'][0]['question_type'] == 7) {
-                $_SESSION['q_order_2'] = $this->uri->segment('3'); 
+                $_SESSION['q_order_2'] = $this->uri->segment('3');
                 //
                 $data['question_info_left_right'] = json_decode($data['question_info_s'][0]['questionName']);
                 $data['maincontent'] = $this->load->view('module/preview/preview_matching', $data, true);
             } elseif ($data['question_info_s'][0]['questionType'] == 8) {
-                $_SESSION['q_order_2'] = $this->uri->segment('3'); 
+                $_SESSION['q_order_2'] = $this->uri->segment('3');
                 // assignment
                 $data['questionBody']    = isset($quesInfo->question_body) ? $quesInfo->question_body : '';
                 $items                   = $quesInfo->assignment_tasks;
@@ -1271,7 +1276,7 @@ public function renderReorderModule($modules = [])
                 $data['assignment_list'] = renderAssignmentTasks($items);
                 $data['maincontent']     = $this->load->view('module/preview/assignment', $data, true);
             } elseif ($data['question_info_s'][0]['questionType'] == 9) {
-                 $_SESSION['q_order_2'] = $this->uri->segment('3'); 
+                 $_SESSION['q_order_2'] = $this->uri->segment('3');
 
                 $info = array();
                 $titles = array();
@@ -1311,7 +1316,7 @@ public function renderReorderModule($modules = [])
 
                 foreach (json_decode($data['question_info_s'][0]['questionName'])->pictureList as $key => $value) {
                     $title[0] = $value;
-                    $title[1] = $questionList['wrongPictureIncrement'][$key]; 
+                    $title[1] = $questionList['wrongPictureIncrement'][$key];
                     $titles[] = $title;
                 }
 
@@ -1357,22 +1362,22 @@ public function renderReorderModule($modules = [])
                 $info['conclution'] = $titles;
                 $data['question'] = $info;
 
-                $data['maincontent'] = $this->load->view('module/preview/module_preview_storyWrite', $data, true);  
+                $data['maincontent'] = $this->load->view('module/preview/module_preview_storyWrite', $data, true);
 
             } elseif ($data['question_info_s'][0]['questionType'] == 10) {
-                $_SESSION['q_order_2'] = $this->uri->segment('3'); 
+                $_SESSION['q_order_2'] = $this->uri->segment('3');
                 $data['question_info']   = json_decode($data['question_info_s'][0]['questionName'], true);
                 $data['maincontent']     = $this->load->view('module/preview/preview_times_table', $data, true);
             } elseif ($data['question_info_s'][0]['questionType'] == 11) {
-                $_SESSION['q_order_2'] = $this->uri->segment('3'); 
+                $_SESSION['q_order_2'] = $this->uri->segment('3');
                 $data['question_info']   = json_decode($data['question_info_s'][0]['questionName'], true);
                 $data['maincontent']     = $this->load->view('module/preview/preview_algorithm', $data, true);
             } elseif ($data['question_info_s'][0]['questionType'] == 12) {
-                $_SESSION['q_order_2'] = $this->uri->segment('3'); 
+                $_SESSION['q_order_2'] = $this->uri->segment('3');
                 $data['question_info']   = json_decode($data['question_info_s'][0]['questionName'], true);
                 $data['maincontent']     = $this->load->view('module/preview/workout_quiz', $data, true);
             } elseif ($data['question_info_s'][0]['questionType'] == 13) {
-                $_SESSION['q_order_2'] = $this->uri->segment('3'); 
+                $_SESSION['q_order_2'] = $this->uri->segment('3');
                 $data['question_info_vcabulary'] = $quesInfo;
                 $data['maincontent']             = $this->load->view('module/preview/preview_matching_workout', $data, true);
             }elseif ($data['question_info_s'][0]['questionType'] == 14) {
@@ -1394,7 +1399,7 @@ public function renderReorderModule($modules = [])
 
             }
 
-                
+
             }elseif ($data['question_info_s'][0]['questionType'] == 15)
             {
                 $data['question_item']=$data['question_info_s'][0]['questionType'];
@@ -1414,15 +1419,15 @@ public function renderReorderModule($modules = [])
                 $data['question_item']=$data['question_info_s'][0]['questionType'];
                 $data['question_info'] = json_decode($data['question_info_s'][0]['questionName']);
                 $data['question_info_ind'] = $data['question_info'];
-                
+
                 $question_info_ind = $data['question_info'];
 
                 $pattern_type = $question_info_ind->pattern_type;
-                
+
                 if ($pattern_type == 4) {
                     $qus_lefts = $question_info_ind->left_memorize_p_four;
                     $qus_rights = $question_info_ind->right_memorize_p_four;
-                    
+
                     $qus_array = [];
                     foreach ($qus_lefts as $key => $value) {
                         $qus_array[$key]['left'] = $value;
@@ -1432,11 +1437,11 @@ public function renderReorderModule($modules = [])
                     $data['qus_array'] = $qus_array;
                 }
 
-                
+
 
                 if ($pattern_type == 3) {
                     $question_step = $question_info_ind->question_step_memorize_p_three;
-                    
+
                     $qus_setup_array = [];
                     $k = 1;
                     $inv=0;
@@ -1460,7 +1465,7 @@ public function renderReorderModule($modules = [])
                 }
 
                 if (isset($data['qus_setup_array'])) {
-                   
+
                     $question_step_details = $data['qus_setup_array'];
 
                     shuffle($question_step_details);
@@ -1495,7 +1500,7 @@ public function renderReorderModule($modules = [])
                 $data['word_memorization'] = $quesInfo;
                 $data['word_questions'] = json_decode($data['question_info_s'][0]['questionName'], true);
                 $data['word_answers'] = json_decode($data['question_info_s'][0]['answer'], true);
-                
+
                 $data['maincontent'] = $this->load->view('module/preview/preview_word_memorization', $data, true);
             }elseif ($data['question_info_s'][0]['questionType'] == 20) {
                 //print_r($data['question_info_s'][0]);die();
@@ -1503,7 +1508,7 @@ public function renderReorderModule($modules = [])
                 $data['comprehension_info'] = $quesInfo;
                 $data['com_questions'] = json_decode($data['question_info_s'][0]['questionName'], true);
                 $data['com_answers'] = json_decode($data['question_info_s'][0]['answer'], true);
-                
+
                 $data['maincontent'] = $this->load->view('module/preview/preview_comprehension', $data, true);
             }elseif ($data['question_info_s'][0]['questionType'] == 21) {
                 //print_r($data['question_info_s'][0]);die();
@@ -1511,21 +1516,23 @@ public function renderReorderModule($modules = [])
                 $data['grammer_info'] = $quesInfo;
                 $data['grammer_questions'] = json_decode($data['question_info_s'][0]['questionName'], true);
                 $data['grammer_answers'] = json_decode($data['question_info_s'][0]['answer'], true);
-                
+
                 $data['maincontent'] = $this->load->view('module/preview/preview_grammer', $data, true);
             }elseif ($data['question_info_s'][0]['questionType'] == 22) {
-                //print_r($data['question_info_s'][0]);die();
-                $_SESSION['q_order_2'] = $this->uri->segment('3');
-                $data['glossary_info'] = $quesInfo;
+
+                // echo '<pre>';print_r($data['question_info_s'][0]);die();
+
+                $_SESSION['q_order_2']      = $this->uri->segment('3');
+                $data['glossary_info']      = $quesInfo;
                 $data['glossary_questions'] = json_decode($data['question_info_s'][0]['questionName'], true);
-                $data['glossary_answers'] = json_decode($data['question_info_s'][0]['answer'], true);
-                
+                $data['glossary_answers']   = json_decode($data['question_info_s'][0]['answer'], true);
+
                 $data['maincontent'] = $this->load->view('module/preview/preview_glossary', $data, true);
             }
         } else {
             $data['maincontent']     = $this->load->view('module/preview/moduleWithoutQues', $data, true);
         } // no question to preview
-        
+
 
         $this->load->view('master_dashboard', $data);
     }//end module_preview()
@@ -1573,11 +1580,11 @@ public function renderReorderModule($modules = [])
         //echo $this->renderSearchedQuestion($quesList);
 
         $serachedQuesIds = array_column($quesList, 'id');
-        
+
         $allQuestionType = $this->tutor_model->getAllInfo('tbl_questiontype');
         $questionGroup = [];
         $maxOrder = 0;
-        $indexId = 0; 
+        $indexId = 0;
         foreach ($allQuestionType as $questionType) {
             $ques_condition['questionType'] = $questionType['id'];
             $ques_condition['user_id'] = $this->loggedUserId;
@@ -1586,7 +1593,7 @@ public function renderReorderModule($modules = [])
         //echo '<pre>';print_r($serachedQuesIds);die;
         $row = '';
         foreach ($allQuestionType as $key) {
-           
+
             $row .= '<div class="col-md-3"><table class="table table-bordered tbl_ques" id="module_setting2"><thead><tr>';
             $row .='<th style="">'.$key['questionType'].'<p style="float:right;">Re-Order</p></th></tr></thead><tbody>';
             $i=1;
@@ -1594,7 +1601,7 @@ public function renderReorderModule($modules = [])
                 if (!in_array($question['id'], $serachedQuesIds)) {
                     continue;
                 }
-                
+
                 $checked = '';
                 $quesOrder='';
                 $qId_ordr = '';
@@ -1700,15 +1707,15 @@ public function renderReorderModule($modules = [])
         echo $students;
     }
 
-    
+
     /**
      * From module(add/edit) section we can view the question info.
      * Clicking the info icon a modal will open up with question info.
      *
      * @return void
-     */ 
+     */
     public function quesInfoForModal()
-    { 
+    {
         $post = $this->input->post();
         $questionId = $post['questionId'];
         $data['quesInfo'] = $this->QuestionModel->info($questionId);
@@ -1716,8 +1723,8 @@ public function renderReorderModule($modules = [])
         $quesType = $data['quesInfo']['questionType'];
         $previewBody = '';
 
-        
-        
+
+
         if ($quesType==1) {
             $previewBody=$this->load->view('module/modal_preview/general', $data, true);
         } elseif ($quesType==2) {
@@ -1725,7 +1732,7 @@ public function renderReorderModule($modules = [])
         } elseif ($quesType==3) {
             $previewBody=$this->load->view('module/modal_preview/vocabulary', $data, true);
         } elseif ($quesType==4) {
-           
+
             $previewBody=$this->load->view('module/modal_preview/multiple_choice', $data, true);
             print_r($previewBody);die();
         } elseif ($quesType==5) {
@@ -1804,7 +1811,7 @@ public function renderReorderModule($modules = [])
             $data['question'] =json_decode($data['quesInfo']['questionName']);
             $previewBody=$this->load->view('module/modal_preview/memorization', $data, true);
         }
-        
+
         echo $previewBody;
     }
 
@@ -1856,7 +1863,7 @@ public function renderReorderModule($modules = [])
                     );
                     $ansObj = json_encode($ansObj);
                     $val = ($showAns==1)?' value="'.$items[$i][$j]['val'].'"' : '';
-                    
+
                     $row .= '<td><input autocomplete="off" type="text" '.$val.' data_q_type="0" data_num_colofrow="'.$i.'_'.$j.'" value="" name="skip_counting[]" class="form-control input-box ans_input  rsskpinpt'.$i.'_'.$j.'" readonly style="min-width:50px; max-width:50px;background-color: rgb(186, 255, 186); ">';
                     $row .= '<input type="hidden" value="" name="given_ans[]" id="given_ans">';
                     $row .='</td>';
@@ -1864,10 +1871,10 @@ public function renderReorderModule($modules = [])
             }
             $row .= '</tr>';
         }
-        
+
         return $row;
     }
-    
+
     public function get_draw_image()
     {
         $this->load->library('image_lib');
@@ -1883,7 +1890,7 @@ public function renderReorderModule($modules = [])
         $imginfo = getimagesize( $file);
         $imgwidth = $imginfo[0];
         $imgheight = $imginfo[1];
-        
+
         $config['image_library'] = 'gd2';
         $config['source_image'] = $file;
         $config['maintain_ratio'] = true;
@@ -1895,7 +1902,7 @@ public function renderReorderModule($modules = [])
 
         $this->image_lib->initialize($config);
         $this->image_lib->resize();
-        
+
         echo base_url().$file;
     }
 
@@ -1916,7 +1923,7 @@ public function renderReorderModule($modules = [])
         $draw_file_name = 'draw'.uniqid();
         $file = $path . $draw_file_name . '.png';
         file_put_contents($file, $data);
-        
+
         $config['image_library'] = 'gd2';
         $config['source_image'] = $file;
         $config['maintain_ratio'] = true;
@@ -1925,7 +1932,7 @@ public function renderReorderModule($modules = [])
 
         $this->image_lib->initialize($config);
         $this->image_lib->resize();
-        
+
         $upImage = base_url().$file;
 
         $dataToInsert[] = [
@@ -1956,10 +1963,10 @@ public function renderReorderModule($modules = [])
 
         $post = $this->input->post();
         $grade = isset($post['grade']) ? $post['grade'] : 0;
-        
+
         //all student by sct id
         $allEnrolledStudent = $this->tutor_model->allStudents(['sct_id'=>$this->loggedUserId]);
-        
+
         //all student by grade
         $allStudentByGrade = $this->QuestionModel->search('tbl_useraccount', ['student_grade'=>$grade]);
         $allStudentByGrade = array_column($allStudentByGrade, 'id');
@@ -1986,13 +1993,13 @@ public function renderReorderModule($modules = [])
         }else{
             $conditions['country'] = $country_id;
         }
-        
+
 
         //$modules = $this->QuestionModel->search('tbl_module', $conditions);
         $modules = $this->Admin_model->getModule('tbl_module', $conditions);
         $modTypes = ['', 'Tutorial', 'Everyday Study', 'Special Exam', 'Assignment'];
         $rows = '';
-        
+
         foreach ($modules as $module) {
             $rows .= '<tr id="'.$module['id'].'">';
             $rows .= '<td>'.date('d-M-Y', $module['exam_date']).'</td>';
@@ -2054,14 +2061,14 @@ public function renderReorderModule($modules = [])
             $sel = $chapter['id'] == $selected ? 'selected' : '';
             $html .= '<option value="' . $chapter['id'] . '" '.$sel.'>' . $chapter['chapterName'] . '</option>';
         }
-        
+
         if ($subject) {
             return $html; //within controller
         } else {
             echo $html; // ajax/form submit
         }
     }
-    
+
     public function tutorial_master_view($id)
     {
         $tutorialInfos = $this->tutor_model->getInfo('for_tutorial_tbl_question', 'tbl_ques_id', $id);
@@ -2173,25 +2180,25 @@ public function renderReorderModule($modules = [])
     }
     public function tutorial_view($id)
     {
-        
+
         $data_4 = array();
-        
+
         // $order_id  = $this->input->post('order_id', true);
         // // print_r($order_id); die();
         $back  = $this->input->post('bk', true);
         $next = $this->input->post('nxt', true);
         $previous_page_server = $_SESSION["previous_page"];
         // print_r($_SESSION["previous_page"]);
-        
-        $order_no_pre =  $_SESSION['q_order']-1; 
-        $order_no_nxt =  $_SESSION['q_order']+1; 
-        $order_no_module =  $_SESSION['q_order_module']; 
+
+        $order_no_pre =  $_SESSION['q_order']-1;
+        $order_no_nxt =  $_SESSION['q_order']+1;
+        $order_no_module =  $_SESSION['q_order_module'];
         $order_previsous_url = $_SESSION['q_order_2'];
         $order_current_url =$_SESSION['q_order'];
         $add_order = $order_previsous_url+1;
-        $next_page ="https://q-study.com/module_preview/".$_SESSION['q_order_module']."/".$add_order; 
+        $next_page ="https://q-study.com/module_preview/".$_SESSION['q_order_module']."/".$add_order;
         // print_r($next_page); die();
-        
+
         if (empty($back) && empty($next) ) {
 
             $datas = $this->ModuleModel->tutor_infos($id,0);
@@ -2199,7 +2206,7 @@ public function renderReorderModule($modules = [])
             $output ='';
             $output .='<h4>Add The followings:</h4>';
             $output .='<img src="assets/uploads/'.$datas[0]->img.'" width="100%" height="100%"><br>';
-            $output .='</div>'; 
+            $output .='</div>';
 
             $output .='<div class="row">';
             $output .='<div class="col-md-6">';
@@ -2212,25 +2219,25 @@ public function renderReorderModule($modules = [])
                       <i class="fa fa-volume-up" onclick="speak()"></i>
                       <i style="color:red;" class="fa fa-exclamation-triangle"></i>
                       <input type="hidden" id="wordToSpeak" value="'.$datas[0]->speech.'">';
-                $output .='</div>';           
-                $output .='</div>';       
+                $output .='</div>';
+                $output .='</div>';
             }
 
             if ($datas[0]->audio !="none" && $datas[0]->speech =="none") {
                 $output .='Audio file: <audio controls>';
                 $output .='<source src ="assets/uploads/question_media/'.$datas[0]->audio.'" type="audio/mpeg">';
                 $output .='</audio><br><br>';
-                $output .='</div>';           
-                $output .='</div>'; 
+                $output .='</div>';
+                $output .='</div>';
             }
             if ($datas[0]->audio =="none" && $datas[0]->speech !="none") {
                 $output .='Speech to text :
                       <i class="fa fa-volume-up" onclick="speak()"></i>
                       <i style="color:red;" class="fa fa-exclamation-triangle"></i>
                       <input type="hidden" id="wordToSpeak" value="'.$datas[0]->speech.'">';
-                $output .='</div>';           
                 $output .='</div>';
-            }          
+                $output .='</div>';
+            }
 
             $output .='<script src="https://code.responsivevoice.org/responsivevoice.js"></script>
             <script>
@@ -2238,18 +2245,18 @@ public function renderReorderModule($modules = [])
                 var word = $("#wordToSpeak").val();
                 responsiveVoice.speak(word);
               }
-            </script>'; 
+            </script>';
             print_r($output);
         }
         if (!empty($back)) {
-           $bk = $_SESSION["order"] - 1; 
-           $_SESSION["order"] = $bk; 
+           $bk = $_SESSION["order"] - 1;
+           $_SESSION["order"] = $bk;
            $datas = $this->ModuleModel->tutor_infos($id,$bk);
            if (!empty($datas)) {
                 $output ='';
                 $output .='<h4>Add The followings:</h4>';
                 $output .='<img src="assets/uploads/'.$datas[0]->img.'" width="100%" height="100%"><br>';
-                $output .='</div>'; 
+                $output .='</div>';
 
                 $output .='<div class="row">';
                 $output .='<div class="col-md-6">';
@@ -2262,23 +2269,23 @@ public function renderReorderModule($modules = [])
                       <i class="fa fa-volume-up" onclick="speak()"></i>
                       <i style="color:red;" class="fa fa-exclamation-triangle"></i>
                       <input type="hidden" id="wordToSpeak" value="'.$datas[0]->speech.'">';
-                $output .='</div>';           
-                $output .='</div>';       
+                $output .='</div>';
+                $output .='</div>';
                 }
 
                 if ($datas[0]->audio !="none" && $datas[0]->speech =="none") {
                     $output .='Audio file: <audio controls>';
                     $output .='<source src ="assets/uploads/question_media/'.$datas[0]->audio.'" type="audio/mpeg">';
                     $output .='</audio><br><br>';
-                    $output .='</div>';           
-                    $output .='</div>'; 
+                    $output .='</div>';
+                    $output .='</div>';
                 }
                 if ($datas[0]->audio =="none" && $datas[0]->speech !="none") {
                     $output .='Speech to text :
                           <i class="fa fa-volume-up" onclick="speak()"></i>
                           <i style="color:red;" class="fa fa-exclamation-triangle"></i>
                           <input type="hidden" id="wordToSpeak" value="'.$datas[0]->speech.'">';
-                    $output .='</div>';           
+                    $output .='</div>';
                     $output .='</div>';
                 }
 
@@ -2288,10 +2295,10 @@ public function renderReorderModule($modules = [])
                     var word = $("#wordToSpeak").val();
                     responsiveVoice.speak(word);
                   }
-                </script>'; 
+                </script>';
                 print_r($output);
            }
-           
+
            else{
             $var = [
                 "first"=>0,
@@ -2304,14 +2311,14 @@ public function renderReorderModule($modules = [])
         }
 
         if (!empty($next)) {
-           $nxt = $_SESSION["order"] + 1; 
-           $_SESSION["order"] = $nxt; 
+           $nxt = $_SESSION["order"] + 1;
+           $_SESSION["order"] = $nxt;
            $datas = $this->ModuleModel->tutor_infos($id,$nxt);
            if (!empty($datas)) {
                 $output ='';
                 $output .='<h4>Add The followings:</h4>';
                 $output .='<img src="assets/uploads/'.$datas[0]->img.'" width="100%" height="100%"><br>';
-                $output .='</div>'; 
+                $output .='</div>';
 
                 $output .='<div class="row">';
                 $output .='<div class="col-md-6">';
@@ -2324,23 +2331,23 @@ public function renderReorderModule($modules = [])
                       <i class="fa fa-volume-up" onclick="speak()"></i>
                       <i style="color:red;" class="fa fa-exclamation-triangle"></i>
                       <input type="hidden" id="wordToSpeak" value="'.$datas[0]->speech.'">';
-                $output .='</div>';           
-                $output .='</div>';       
+                $output .='</div>';
+                $output .='</div>';
                 }
 
                 if ($datas[0]->audio !="none" && $datas[0]->speech =="none") {
                     $output .='Audio file: <audio controls>';
                     $output .='<source src ="assets/uploads/question_media/'.$datas[0]->audio.'" type="audio/mpeg">';
                     $output .='</audio><br><br>';
-                    $output .='</div>';           
-                    $output .='</div>'; 
+                    $output .='</div>';
+                    $output .='</div>';
                 }
                 if ($datas[0]->audio =="none" && $datas[0]->speech !="none") {
                     $output .='Speech to text :
                           <i class="fa fa-volume-up" onclick="speak()"></i>
                           <i style="color:red;" class="fa fa-exclamation-triangle"></i>
                           <input type="hidden" id="wordToSpeak" value="'.$datas[0]->speech.'">';
-                    $output .='</div>';           
+                    $output .='</div>';
                     $output .='</div>';
                 }
 
@@ -2350,7 +2357,7 @@ public function renderReorderModule($modules = [])
                     var word = $("#wordToSpeak").val();
                     responsiveVoice.speak(word);
                   }
-                </script>'; 
+                </script>';
                 print_r($output);
            }
            else{
@@ -2373,15 +2380,15 @@ public function renderReorderModule($modules = [])
             array_push($data_4, $var);
             echo json_encode($data_4);
             }
-            
+
            }
         }
     }
-    
-    
-    
-    
-    
+
+
+
+
+
     public function module_creative_quiz_ans_matching()
     {
         $response=array(
@@ -2663,7 +2670,7 @@ public function renderReorderModule($modules = [])
                 'clue_id'=>$clue_id,
             );
         }
-        
+
         echo json_encode($response);
 
     }
@@ -2786,7 +2793,7 @@ public function renderReorderModule($modules = [])
         }
 
     }
-    
+
     public function assign_subject()
     {
         $data = array();
@@ -2849,7 +2856,7 @@ public function renderReorderModule($modules = [])
         $this->load->view('master_dashboard', $data);
     }
 
-    
+
     public function save_assign_subject()
     {
         $data = array();
@@ -3006,40 +3013,40 @@ public function renderReorderModule($modules = [])
         $course_id = $_POST['course_id'];
         $moduleType = $_POST['moduleType'];
         if (isset($course_id) && $course_id != '')
-        { 
+        {
             $html = '';
             $assign_course = $this->Student_model->getInfo('tbl_assign_subject', 'course_id',$course_id);
-            
+
             if (!empty($assign_course))
             {
                 $subjectId = json_decode($assign_course[0]['subject_id']);
                 $subjects = array();
                $html .= '<span class="badge badge-pill badge-primary" courseId="'.$course_id.'" id="subjectNameQ" subjectId="all" style="width: 197px;;margin:5px 5px 5px 5px; cursor: pointer;">All</span>';
-               
+
                $subjectId = $this->Student_model->getAllSubjectByCourse($course_id,$moduleType);
-               
+
                 foreach($subjectId as $value)
                 {
                     $sb =  $this->Student_model->getInfo('tbl_subject', 'subject_id',$value);
-                    
+
                     if (!empty($sb))
                     {
                        $html .= '<span class="badge badge-pill badge-primary" courseId="'.$course_id.'" id="subjectNameQ" subjectId="'.$sb[0]['subject_id'].'" style="width:197px;margin:5px 5px 5px 5px; cursor: pointer; text-transform: capitalize;">'.$sb[0]['subject_name'].'</span>';
                     }
                 }
-                
+
                 echo $html;
             }
 
         }
     }
-    
-    
+
+
     //Qstudy Module instraction  Multiple Video section
     public function module_instruction_video($id)
     {
         $data['user_info'] = $this->tutor_model->getInfo('tbl_useraccount', 'id', $this->session->userdata('user_id'));
-        
+
         $data['page_title'] = '.:: Q-Study :: Tutor yourself...';
         $data['headerlink'] = $this->load->view('dashboard_template/headerlink', $data, true);
         $data['header'] = $this->load->view('dashboard_template/header', $data, true);
@@ -3052,15 +3059,15 @@ public function renderReorderModule($modules = [])
     {
         $data['videos'] = $this->tutor_model->getInfo('module_instruction_videos_new', 'module_id',$id);
         $data['user_info'] = $this->tutor_model->getInfo('tbl_useraccount', 'id', $this->session->userdata('user_id'));
-        
+
         $data['page_title'] = '.:: Q-Study :: Tutor yourself...';
         $data['headerlink'] = $this->load->view('dashboard_template/headerlink', $data, true);
         $data['header'] = $this->load->view('dashboard_template/header', $data, true);
         $data['footerlink'] = $this->load->view('dashboard_template/footerlink', $data, true);
         $data['module_id'] = $id;
-        
+
         if (count($data['videos'])) {
-            $info = json_decode($data['videos'][0]['files'] , true); 
+            $info = json_decode($data['videos'][0]['files'] , true);
             foreach ($info as $key => $value) {
                 if (isset($value['title']) ) {
                     $data['title'][] = $value['title'];
@@ -3095,9 +3102,9 @@ public function renderReorderModule($modules = [])
                 array_push($array_one, $v);
             }
         }
-        
+
         $uType = $this->session->userdata('userType');
-        
+
         $files = $_FILES;
 
        $this->load->library('upload');
@@ -3140,12 +3147,12 @@ public function renderReorderModule($modules = [])
                   ];
 
                   array_push($array_one, $var2);
-                 
+
                }
         }
 
         return json_encode($array_one);
-        
+
     }
 
     public function save_module_instract_video()
@@ -3180,8 +3187,8 @@ public function renderReorderModule($modules = [])
           }
 
     }
-    
-    
+
+
     public function edit_module_instruction_video($module_id,$video_id)
     {
         $conditions = array();
@@ -3222,14 +3229,14 @@ public function renderReorderModule($modules = [])
             echo  json_encode($result);
             die;
         }
-        
+
     }
 
     public function update_instruction()
     {
         $videos = $this->tutor_model->getInfo('module_instruction_videos_new', 'module_id',$_POST['module_id']);
 
-        $info = json_decode($videos[0]['files'] , true); 
+        $info = json_decode($videos[0]['files'] , true);
         foreach ($info as $key => $value) {
             if (isset($value['title']) ) {
                 $title[] = $value['title'];
@@ -3291,10 +3298,10 @@ public function renderReorderModule($modules = [])
     public function delete_module_instruction_video()
     {
         $post = $this->input->post();
-        
+
         $videos = $this->tutor_model->getInfo('module_instruction_videos_new', 'module_id',$_POST['module_id']);
 
-        $info = json_decode($videos[0]['files'] , true); 
+        $info = json_decode($videos[0]['files'] , true);
         foreach ($info as $key => $value) {
             if (isset($value['title']) ) {
                 $title[] = $value['title'];
@@ -3328,7 +3335,7 @@ public function renderReorderModule($modules = [])
 
             $videos = $this->tutor_model->getInfo('module_instruction_videos_new', 'module_id',$_POST['module_id']);
 
-            $info = json_decode($videos[0]['files'] , true); 
+            $info = json_decode($videos[0]['files'] , true);
             foreach ($info as $key => $value) {
                 if (isset($value['title']) ) {
                     $title[] = $value['title'];
@@ -3338,7 +3345,7 @@ public function renderReorderModule($modules = [])
             }
             $files = $this->processVideoHelp($post);
 
-            $info = json_decode($files , true); 
+            $info = json_decode($files , true);
 
             foreach ($info as $key => $value) {
                 if (isset($value['title']) ) {
@@ -3361,7 +3368,7 @@ public function renderReorderModule($modules = [])
           }else{
 
                $array = array(
-                
+
                 'module_id_error'     => form_error('module_id'),
                );
 
@@ -3391,7 +3398,7 @@ public function renderReorderModule($modules = [])
         $get_involved_school = $this->Student_model->get_sct_enrollment_info($this->session->userdata('user_id'), 4);
 
         $all_parents = $this->Student_model->all_assigners_new($loggedStudentId);
-                
+
         $data['module_type'] = $moduleType;
         $i = 0;
         $allSchoolTutor = array();
@@ -3402,7 +3409,7 @@ public function renderReorderModule($modules = [])
         }
 
         $data['allTutors'] = $allSchoolTutor;
-        
+
         $data['module_type'] = $moduleType;
         $data['headerlink'] = $this->load->view('dashboard_template/headerlink', '', true);
         $data['header']     = $this->load->view('dashboard_template/header', '', true);
@@ -3425,7 +3432,7 @@ public function renderReorderModule($modules = [])
         $get_involved_school = $this->Student_model->get_sct_enrollment_info($this->session->userdata('user_id'), 5);
 
         $all_parents = $this->Student_model->all_assigners_new($loggedStudentId);
-                
+
         $data['module_type'] = $moduleType;
         $i = 0;
         $allSchoolTutor = array();
@@ -3436,7 +3443,7 @@ public function renderReorderModule($modules = [])
         }
 
         $data['allTutors'] = $allSchoolTutor;
-        
+
         $data['module_type'] = $moduleType;
         $data['headerlink'] = $this->load->view('dashboard_template/headerlink', '', true);
         $data['header']     = $this->load->view('dashboard_template/header', '', true);
@@ -3447,7 +3454,7 @@ public function renderReorderModule($modules = [])
     }
     public function createModule($id="")
     {
-        
+
         if(empty($id)){
             $this->db->truncate('tbl_pre_module_temp');
             $module_info['module_name'] = null;
@@ -3456,7 +3463,7 @@ public function renderReorderModule($modules = [])
             $module_info['course_id'] = null;
             $module_info['show_student'] = null;
             $module_info['serial'] = null;
-        
+
             $this->session->set_userdata('module_info_creadiential', $module_info);
         }
         $this->session->unset_userdata('module_status');
@@ -3464,7 +3471,7 @@ public function renderReorderModule($modules = [])
         $this->session->unset_userdata('param_module_id');
         $data['module_cre_info'] = $this->session->userdata('module_info_creadiential');
         // echo "<pre>";print_r($data['module_cre_info']);die();
-       
+
 
         $_SESSION['prevUrl'] = $_SERVER['HTTP_REFERER'];
         if (strpos($_SESSION['prevUrl'], "edit-module") || strpos($_SESSION['prevUrl'], "add-module")) {
@@ -3536,7 +3543,7 @@ public function renderReorderModule($modules = [])
         $data['question_list'] = $question_list;
         $data['loggedUserType'] = $this->loggedUserType;
         // echo "<pre>"; print_r($question_list); die();
-        
+
         $studentIds = $this->tutor_model->allStudents(['sct_id' => $user_id]);
         //echo "<pre>"; print_r($studentIds);die;
         $data['allquestiontype']  = $this->ModuleModel->getQuestionType();
@@ -3550,8 +3557,7 @@ public function renderReorderModule($modules = [])
         $this->load->view('master_dashboard', $data);
     }
 
-    public function detailsModule()
-    { 
+    public function detailsModule(){
         // echo "hi"; die();
         // $this->session->unset_userdata('search_module_name');
         // $this->session->unset_userdata('search_student_grade');
@@ -3584,7 +3590,7 @@ public function renderReorderModule($modules = [])
         $data['header']     = $this->load->view('dashboard_template/header', $data, true);
         $data['footerlink'] = $this->load->view('dashboard_template/footerlink', '', true);
 
-        
+
 
         $data['all_grade']   = $this->tutor_model->getAllInfo('tbl_studentgrade');
         $data['all_modules']    = $this->tutor_model->getAllInfo('tbl_moduletype');
@@ -3609,27 +3615,27 @@ public function renderReorderModule($modules = [])
         $config = array();
 		$config["base_url"] = base_url() . "details-module";
 		$config["total_rows"] = $this->ModuleModel->countTblNewModuleRows();
-		
+
 		$config["per_page"] = 10;
 		$config["uri_segment"] = 2;
 
-		$config['full_tag_open'] = '<ul class="module_pg pagination">';        
-        $config['full_tag_close'] = '</ul>';        
-        $config['first_link'] = 'First';        
+		$config['full_tag_open'] = '<ul class="module_pg pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['first_link'] = 'First';
         $config['last_link'] = 'Last';
-        $config['first_tag_open'] = '<li class="page-item"><span class="page-link">';        
-        $config['first_tag_close'] = '</span></li>';        
-        $config['prev_link'] = '&laquo';        
-        $config['prev_tag_open'] = '<li class="page-item"><span class="page-link">';        
-        $config['prev_tag_close'] = '</span></li>';        
-        $config['next_link'] = '&raquo';        
-        $config['next_tag_open'] = '<li class="page-item"><span class="page-link">';        
-        $config['next_tag_close'] = '</span></li>';        
-        $config['last_tag_open'] = '<li class="page-item"><span class="page-link">';        
-        $config['last_tag_close'] = '</span></li>';        
-        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="#">';        
-        $config['cur_tag_close'] = '</a></li>';        
-        $config['num_tag_open'] = '<li class="page-item"><span class="page-link">';        
+        $config['first_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['first_tag_close'] = '</span></li>';
+        $config['prev_link'] = '&laquo';
+        $config['prev_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['prev_tag_close'] = '</span></li>';
+        $config['next_link'] = '&raquo';
+        $config['next_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['next_tag_close'] = '</span></li>';
+        $config['last_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['last_tag_close'] = '</span></li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="#">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item"><span class="page-link">';
         $config['num_tag_close'] = '</span></li>';
 
 		// $config['attributes'] = array('class' => 'myclass');
@@ -3640,7 +3646,7 @@ public function renderReorderModule($modules = [])
         // echo $page;die();
 		$data["links"] = $this->pagination->create_links();
         $data['all_module_questions'] = $this->ModuleModel->getTblNewModule($config["per_page"], $page);
-        
+
         foreach($data['all_module_questions'] as $key => $value){
             $data['all_module_questions'][$key]['country_name'] = $this->ModuleModel->getCountryName($value['country']);
             $data['all_module_questions'][$key]['course_name'] = $this->ModuleModel->getCourseName($value['chapter']);
@@ -3686,7 +3692,7 @@ public function renderReorderModule($modules = [])
         ];
         //echo "<pre>";print_r($data);die();
         $duplicate = $this->ModuleModel->moduleQuestionDuplicate('tbl_pre_module_temp', $data);
-        
+
         if ($duplicate) {
             echo 'true';
         } else {
@@ -3798,7 +3804,7 @@ public function renderReorderModule($modules = [])
         }else{
             $optional_time = 0;
         }
-        
+
         $moduleTableData   = [];
         $moduleTableData[] = [
             'moduleName'        => $clean['moduleName'],
@@ -3853,7 +3859,7 @@ public function renderReorderModule($modules = [])
             $this->ModuleModel->insert('tbl_modulequestion', $arr);
             $this->session->set_flashdata('module_msg', 'Save Successfully');
 
-            
+
         }
 
         if ($clean['moduleType'] == 2) {
@@ -3901,7 +3907,7 @@ public function renderReorderModule($modules = [])
         $this->session->set_userdata('exact_time', $exact_time);
 
         $data['question_info_s'] = $this->tutor_model->getNewModuleQuestion($modle_id, $question_order_id, null);
-        
+
         $data['main_module'] = $this->tutor_model->getInfo('tbl_module', 'id', $modle_id);
         // print_r($data['question_info_s']);
 
@@ -4188,7 +4194,7 @@ public function renderReorderModule($modules = [])
 
         $this->load->view('master_dashboard', $data);
     } //end module_preview()
-    
+
     public function newModuleDuplicate()
     {
         // echo "<pre>"; print_r($_POST); die();
@@ -4201,7 +4207,7 @@ public function renderReorderModule($modules = [])
         $subject = $this->input->post('subject');
         $chapter = $this->input->post('chapter');
         $user_id = $this->session->userdata('user_id');
-        
+
         if($withQuestion == 1){
             $moduleId = $this->input->post('module_id');
             $items = $this->ModuleModel->getTblModuleInfo($moduleId);
@@ -4209,9 +4215,9 @@ public function renderReorderModule($modules = [])
             if(!empty($Max_serial['max_serial'])){
               $serial = $Max_serial['max_serial']+1;
             }else{
-              $serial = 1; 
+              $serial = 1;
             }
-            
+
             $items['id'] = null;
             $items['moduleName'] = $this->input->post('moduleName');
             $items['course_id'] = $this->input->post('course_id');
@@ -4230,7 +4236,7 @@ public function renderReorderModule($modules = [])
 
             $items['serial'] = $serial;
 
-            
+
             $this->db->insert('tbl_module', $items);
             $new_module_id = $this->db->insert_id();
 
@@ -4252,24 +4258,24 @@ public function renderReorderModule($modules = [])
                         break;
                     }
                 }
-    
+
                 $repetition_days = json_encode($a);
                 $this->db->where('id', $insertId)->update('tbl_module', ['repetition_days' => $repetition_days]);
             }
-            
+
             echo 1;
 
         }else{
-            
+
             $moduleId = $this->input->post('module_id');
             $items = $this->ModuleModel->getTblModuleInfo($moduleId);
             $Max_serial = $this->ModuleModel->getModuleMaxSerial($course_id,$moduleType,$studentGrade);
             if(!empty($Max_serial['max_serial'])){
               $serial = $Max_serial['max_serial']+1;
             }else{
-              $serial = 1; 
+              $serial = 1;
             }
-            
+
             $items['id'] = null;
             $items['moduleName'] = $this->input->post('moduleName');
             $items['course_id'] = $this->input->post('course_id');
@@ -4285,7 +4291,7 @@ public function renderReorderModule($modules = [])
                 $items['subject'] = 0;
                 $items['chapter'] = 0;
             }
-            
+
             $items['serial'] = $serial;
 
             //echo "<pre>";print_r($items);die();
@@ -4315,7 +4321,7 @@ public function renderReorderModule($modules = [])
                         break;
                     }
                 }
-    
+
                 $repetition_days = json_encode($a);
                 $this->db->where('id', $insertId)->update('tbl_module', ['repetition_days' => $repetition_days]);
             }
@@ -4359,7 +4365,7 @@ public function renderReorderModule($modules = [])
         $data['module_id'] = $this->input->post('module_id');
         // echo $this->db->last_query();
         // echo "<pre>";print_r($question[$question_number-1]);die();
-         
+
         // $temp = $this->ModuleModel->getInfo2('tbl_question', 'id', $question['id']);
 
         echo json_encode($data);
@@ -4390,8 +4396,8 @@ public function renderReorderModule($modules = [])
             $module_insert['question_no'] = $question_no;
             $module_insert['question_no'] = $this->input->post('country');
             $this->db->insert('tbl_pre_module_temp', $module_insert);
-            
-            
+
+
         }else{
             // echo 22; die();
 
@@ -4429,7 +4435,7 @@ public function renderReorderModule($modules = [])
         $module_session_info = $this->session->userdata('edit_module_info_creadiential');
 
         if(empty($id) && $module_session_info['module_id']!=$moduleId){
-           
+
             $module_info['module_name'] = null;
             $module_info['grade_id'] = null;
             $module_info['module_type'] = null;
@@ -4437,14 +4443,14 @@ public function renderReorderModule($modules = [])
             $module_info['show_student'] = null;
             $module_info['serial'] = null;
             $module_info['module_id'] = $moduleId;
-        
+
             $this->session->set_userdata('edit_module_info_creadiential', $module_info);
         }
         if($id==2){
             $this->session->unset_userdata('edit_module_info_creadiential');
         }
         $data['module_cre_info'] = $this->session->userdata('edit_module_info_creadiential');
-        
+
         // echo "<pre>";print_r($data['module_cre_info']);die();
 
 
@@ -4468,8 +4474,8 @@ public function renderReorderModule($modules = [])
         $user_id                = $this->session->userdata('user_id');
         $data['loggedUserType'] = $this->loggedUserType;
         $data['user_info']      = $this->tutor_model->userInfo($user_id);
-        
-        
+
+
         $data['questions'] = $this->ModuleModel->getEditModuleInfo($moduleId);
         $country_id = $this->session->userdata('selCountry');
         //echo "<pre>";print_r($data['questions']);die();
@@ -4491,7 +4497,7 @@ public function renderReorderModule($modules = [])
 
               $data['questions'][$key]['order'] = $order;
         }
-        
+
 
         $module = $this->ModuleModel->newModuleInfo($moduleId);
         //echo '<pre>'; print_r($data['questions']); die();
@@ -4517,7 +4523,7 @@ public function renderReorderModule($modules = [])
         $data['footerlink'] = $this->load->view('dashboard_template/footerlink', '', true);
         $user_id = $this->session->userdata('user_id');
         // echo '<pre>'; print_r($data['courses']); die();
-        
+
         $data['loggedUserType'] = $this->loggedUserType;
 
 
@@ -4542,14 +4548,14 @@ public function renderReorderModule($modules = [])
             $studentIds           = $this->tutor_model->allStudents(['sct_id' => $user_id]);
         }
         $data['allsubjects']  = $this->ModuleModel->getAllSubjects($user_id);
-        $data['allchapters']  = $this->ModuleModel->getAllChapters($user_id); 
+        $data['allchapters']  = $this->ModuleModel->getAllChapters($user_id);
 
         $data['allStudents']  = $this->renderStudentIds($studentIds, $indivStdIds);
         $data['allquestiontype']  = $this->ModuleModel->getQuestionType();
         //echo "<pre>";print_r($data);
         $data['maincontent'] = $this->load->view('module/new_edit_module', $data, true);
         $this->load->view('master_dashboard', $data);
-    } 
+    }
 
     public function deleteModuleQuestion($questionId = 0)
     {
@@ -4565,12 +4571,12 @@ public function renderReorderModule($modules = [])
     {
 
         $delItems = $this->QuestionModel->delete('tbl_edit_module_temp', 'id', $questionId);
-       
+
             $this->db->select('*');
             $this->db->from('tbl_edit_module_temp');
             $query_new = $this->db->get();
             $results = $query_new->result_array();
-            
+
             if(empty($results)){
                 $this->db->where('module_id', $module_id);
                 $this->db->delete('tbl_modulequestion');
@@ -4597,7 +4603,7 @@ public function renderReorderModule($modules = [])
         $question_id = $this->input->post('main_questionId', true);
         //echo "<pre>"; print_r($_POST); die();
         $question  = $this->ModuleModel->getDuplicateQuestion($question_id);
-        
+
         $data = [
             'question_id' => $question['id'],
             'question_type' => $question['questionType'],
@@ -4716,7 +4722,7 @@ public function renderReorderModule($modules = [])
         ];
 
         $this->ModuleModel->questionSorting('tbl_module', 'id', $clean['id'], $moduleTableData);
-        
+
 
         $this->db->select('MAX(serial) as max_serial');
         $this->db->from('tbl_module');
@@ -4792,7 +4798,7 @@ public function renderReorderModule($modules = [])
             $this->ModuleModel->insert('tbl_modulequestion', $arr);
             $this->session->set_flashdata('module_msg', 'Save Successfully');
 
-            
+
         }
 
         $this->db->truncate('tbl_edit_module_temp');
@@ -4828,7 +4834,7 @@ public function renderReorderModule($modules = [])
         $this->ModuleModel->deleteTblNewModuleQuestion($moduleId);
 
         if(!empty($chk_exits)){
-             
+
             foreach($chk_exits as $result){
                $module_id = $result['id'];
                $new_serial = $result['serial']-1;
@@ -4844,7 +4850,7 @@ public function renderReorderModule($modules = [])
         // echo "<pre>"; print_r($items); die();
         $this->session->set_flashdata('delete_success', "Successfully Deleted !!");
         redirect(base_url() . 'details-module', 'refresh');
-    } 
+    }
 
     public function addCourseByModule(){
         $data['courseName'] = $this->input->post('course_name');
@@ -4874,9 +4880,9 @@ public function renderReorderModule($modules = [])
 
             $query = $this->db->get();
             $result = $query->result_array();
-            $res['success'] = $result[0]; 
+            $res['success'] = $result[0];
         }else{
-            $res['success'] = 1; 
+            $res['success'] = 1;
         }
 
         echo json_encode($res);
@@ -4903,8 +4909,8 @@ public function renderReorderModule($modules = [])
         $module_info['optTime'] = $this->input->post('optTime');
         $module_info['subject_id'] = $this->input->post('subject_id');
         $module_info['chapter_id'] = $this->input->post('chapter_id');
-        
-        
+
+
         $this->session->set_userdata('module_info_creadiential', $module_info);
     }
 
@@ -4929,7 +4935,7 @@ public function renderReorderModule($modules = [])
         $module_info['optTime'] = $this->input->post('optTime');
         $module_info['subject_id'] = $this->input->post('subject_id');
         $module_info['chapter_id'] = $this->input->post('chapter_id');
-        
+
         $this->session->set_userdata('edit_module_info_creadiential', $module_info);
     }
 
@@ -4999,7 +5005,7 @@ public function renderReorderModule($modules = [])
             }
 
         }
-        
+
         echo 1;
     }
 
@@ -5009,11 +5015,11 @@ public function renderReorderModule($modules = [])
         $grades = $this->input->post('grades');
         $moduleTypes = $this->input->post('moduleTypes');
         $courseIds = $this->input->post('courseIds');
-        
+
         sort($allSerial);
         // print_r($moduleIds);
         // print_r($allSerial);die();
-        
+
         foreach($moduleIds as $key => $module_id){
 
             $grade = $grades[$key];
@@ -5031,10 +5037,10 @@ public function renderReorderModule($modules = [])
     }
 
     public function addNewSubject(){
-        
+
         $data['subject_name'] = $this->input->post('subject_name');
         $data['created_by'] = $this->session->userdata('user_id');
-        
+
         $this->db->insert('tbl_subject', $data);
         $insert_id = $this->db->insert_id();
 
@@ -5045,7 +5051,7 @@ public function renderReorderModule($modules = [])
         $subjects = $query_new->result_array();
 
         echo json_encode($subjects[0]);
-        
+
     }
 
     public function addNewChapter(){
@@ -5063,7 +5069,7 @@ public function renderReorderModule($modules = [])
         $Chapter = $query_new->result_array();
 
         echo json_encode($Chapter[0]);
-        
+
     }
 
     public function deleteSubjectByModule(){
@@ -5156,44 +5162,44 @@ public function renderReorderModule($modules = [])
         $query_new = $this->db->get();
         $all_module = $query_new->result_array();
         //echo "<pre>";print_r($all_module);die();
-        
+
 
         $this->load->library('pagination');
         $config = array();
 		$config["base_url"] = base_url() . "details-module";
 		$config["total_rows"] = $all_module[0]['total_module'];
-		
+
 		$config["per_page"] = 10;
 		// $config["uri_segment"] = 2;
         $config["use_page_numbers"] = true;
         $config["cur_page"] = $start_index+1;
 
-		$config['full_tag_open'] = '<ul class="module_pg pagination">';        
-        $config['full_tag_close'] = '</ul>';        
-        $config['first_link'] = 'First';        
+		$config['full_tag_open'] = '<ul class="module_pg pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['first_link'] = 'First';
         // $config['last_link'] = 'Last';
-        $config['first_tag_open'] = '<li class="page-item"><span class="page-link">';        
-        $config['first_tag_close'] = '</span></li>';        
-        $config['prev_link'] = '&laquo';        
-        $config['prev_tag_open'] = '<li class="page-item"><span class="page-link">';        
-        $config['prev_tag_close'] = '</span></li>';        
-        $config['next_link'] = '&raquo';        
-        $config['next_tag_open'] = '<li class="page-item"><span class="page-link">';        
-        $config['next_tag_close'] = '</span></li>';        
-        $config['last_tag_open'] = '<li class="page-item"><span class="page-link">';        
-        $config['last_tag_close'] = '</span></li>';        
-        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="#">';        
-        $config['cur_tag_close'] = '</a></li>';        
-        $config['num_tag_open'] = '<li class="page-item"><span class="page-link">';        
+        $config['first_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['first_tag_close'] = '</span></li>';
+        $config['prev_link'] = '&laquo';
+        $config['prev_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['prev_tag_close'] = '</span></li>';
+        $config['next_link'] = '&raquo';
+        $config['next_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['next_tag_close'] = '</span></li>';
+        $config['last_tag_open'] = '<li class="page-item"><span class="page-link">';
+        $config['last_tag_close'] = '</span></li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="#">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item"><span class="page-link">';
         $config['num_tag_close'] = '</span></li>';
 		$this->pagination->initialize($config);
-        
+
 		$data["links"] = $this->pagination->create_links();
 
-        
-        
-        
-        
+
+
+
+
         $this->db->select('*,tbl_module.id as id,tbl_subject.subject_name as subject_name');
         $this->db->from('tbl_module');
         $this->db->join('tbl_course', 'tbl_module.course_id=tbl_course.id', 'left');
@@ -5223,9 +5229,9 @@ public function renderReorderModule($modules = [])
         $modules = $query_new->result_array();
         // echo "<pre>"; print_r($modules);die();
         //echo $this->db->last_query();
-        
+
         $data["modules"] = $modules;
-        
+
         echo json_encode($data);
 
     }
@@ -5262,5 +5268,5 @@ public function renderReorderModule($modules = [])
         echo 1;
     }
 
-    
+
 }//end class

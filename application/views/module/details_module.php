@@ -3,7 +3,7 @@
   .bluebutton:hover {
     background: #00a2e8;
     padding: 2px 2px 2px 4px;
-  } 
+  }
 
   .bluebutton label {
     display: flex;
@@ -80,7 +80,7 @@
 
 
 <?php
- //  echo "<pre>";print_r($all_course);
+  // echo "<pre>";print_r($all_course);die;
 ?>
 
 <!-- <div class="container top100"> -->
@@ -157,7 +157,7 @@
               <?php } ?>
             </select>
           </div>
-        
+
           <?php if($_SESSION['userType'] != 3){?>
             <div class="form-group" style="float: left;margin-right: 10px;">
               <label>Course Name<span id="get_subject"></label>
@@ -202,7 +202,7 @@
                 </thead>
                 <tbody class="row_position addMoreModuleList">
                   <?php $moduleTypes = ['', 'Tutorial', 'Everyday Study', 'Special Exam', 'Assignment'] ?>
-                  
+
 
 
 
@@ -240,7 +240,7 @@
 
         <?php if(isset($links)){ ?>
           <div class="pagination-class text-center">
-              
+
           </div>
         <?php } ?>
 
@@ -456,8 +456,8 @@
                     <?php echo $allStudents; ?>
                   </select>
                   <!--                    <select id="indivStIds" class="form-control select2" name="indivStIds[]" multiple="">
-                       <?php //echo $allStudents; 
-                        ?> 
+                       <?php //echo $allStudents;
+                        ?>
                       <option value="">--Student--</option>
                     </select>-->
                 </div>
@@ -552,7 +552,7 @@
       <div class="modal-body row">
         <label>Add Subject</label> <br><br>
         <input type="text" id="subjectName" class="form-control" placeholder="Enter your Subject Name">
-        
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn_blue" onclick="saveSubject()">Submit</button>
@@ -571,7 +571,7 @@
       <div class="modal-body row">
         <label>Add Chapter</label> <br><br>
         <input type="text" id="chapterName" class="form-control" placeholder="Enter your Chapter Name">
-        
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn_blue"  onclick="saveChapter()">Submit</button>
@@ -610,7 +610,7 @@
             page_index:page_index,
           },
           success: function(data) {
-            
+
             var all_module = JSON.parse(data);
             var modules = all_module.modules;
             var pagination = all_module.links;
@@ -655,21 +655,21 @@
               html+= '<tr class="parent_class" id="'+modules[i].serial+'" data-id="'+modules[i].id+'" data-grade="'+modules[i].studentGrade+'" data-moduleType="'+modules[i].moduleType+'" data-courseId="'+modules[i].course_id+'"><td><div class="form-group"><button type="button" class="btn btn-default"><label for="formInputButton">Show <span><input type="checkbox" name="show_student" id="formInputButton" value="1" '+show_checked+'></span> </label></button></div></td><td><div class="form-group"><button type="button" class="btn btn-default bluebutton"><label for="formInputButton1" style="width: 80px">SL<input type="text" data-index="'+modules[i].course_id+'" value="'+modules[i].serial+'" data-id="'+modules[i].id+'" data-course="'+modules[i].course_id+'" data-grade = "'+modules[i].studentGrade+'" data-modType="'+modules[i].moduleType+'" class="form-control assign_serial serial_'+i+'"></label></button></div></td><td><div class="form-group"><input type="button" value="'+modules[i].moduleName+'" onclick="'+url+'" class="form-control '+part_color_class+'" name="moduleName" id="moduleName"></div></td><td><div class="form-group"><input type="text" style="max-width:120px" class="form-control '+part_color_class+'" id="grade" value="'+modules[i].subject_name+'"></div></td><td><div class="form-group"><input type="text" style="max-width:120px" class="form-control '+part_color_class+'" id="grade" value="'+modules[i].chapterName+'"></div></td><td style="width: 60px;"><div class="form-group"><input type="text" style="max-width:120px" class="form-control '+part_color_class+'" id="grade" value="'+modules[i].studentGrade+'"></div></td><td><div class="form-group"><input  style="max-width:120px" type="text" class="form-control '+part_color_class+'" value="'+mod_types[modules[i].moduleType]+'"></div></td><td><div class="form-group"><input  type="text" class="form-control '+part_color_class+'" value="'+$(modules[i].courseName).text()+'"></div></td><td class="actionbutton"><a class="ss_q_btn btn pull-left duplicate-module '+part_color_class+'" type="button" data-countryname="'+modules[i].countryName+'" data-modulename="'+modules[i].moduleName+'" data-moduletype="'+modules[i].moduleType+'" data-course="'+modules[i].courseName+'" data-grade="'+modules[i].studentGrade+'" data-moduleid="'+modules[i].id+'" data-courseId="'+modules[i].course_id+'" data-moduleTypeId="'+modules[i].moduleType+'" data-subjectId="'+modules[i].subject+'" data-chapterId="'+modules[i].chapter+'"><i class="fa fa-clipboard" aria-hidden="true"></i></a><a class="ss_q_btn btn pull-left deleteModule '+part_color_class+'" href="delete_new_module/'+modules[i].id+'"><i class="fa fa-trash" aria-hidden="true"></i></a><a class="ss_q_btn btn pull-left '+part_color_class+'" href="<?= base_url()?>module_preview/'+modules[i].id+ '/1" id="preview_btn"><i class="fa fa-file-o" aria-hidden="true"></i> Preview</a><input type="submit" name="submit" class="ss_q_btn btn btn-danger '+part_color_class+'" value="Save" /><img style="height:33px" src="assets/images/image-plus.png"></td></tr>';
 
               part_change=0;
-            }  
+            }
             $('.addMoreModuleList').html(html);
             $('.pagination-class').html(pagination);
             localStorage.clear();
 
           }
         });
-      
+
     }
 
     $(function(){
       // alert('hello');
       get_all_module();
 
-      
+
 
     });
 
@@ -693,10 +693,10 @@
             updateOrder(allSerial,moduleIds,grades,moduleTypes,courseIds);
         }
     });
-    
+
 
     function updateOrder(allSerial,moduleIds,grades,moduleTypes,courseIds) {
-       
+
       $.ajax({
       url: "<?php echo base_url(); ?>update_serial_to_module",
       method: 'POST',
@@ -783,8 +783,8 @@
     var chapter_id = $(this).attr('data-chapterId');
     var grade_id = $(this).attr('data-grade');
 
-    
-    
+
+
     var grade = $(this).data('grade');
     var allModules = '<?php echo json_encode($all_modules); ?>';
     var allModule = JSON.parse(allModules);
@@ -797,7 +797,7 @@
         moduleType += '<option value="' + allModule[i].id + '">' + allModule[i].module_type + '</option>';
       }
     }
-    
+
 
     var all_Country = '<?php echo json_encode($allCountry); ?>';
     var allCountry = JSON.parse(all_Country);
@@ -807,11 +807,11 @@
       countryName += '<option value="' + allCountry[i].id + '">' + allCountry[i].countryName + '</option>';
     }
 
-   
+
     //var course = '<?//php echo json_encode($courses); ?>';
     // console.log('<?php echo $courses;?>');
     var courses = JSON.parse('<?php echo $courses;?>');
-   
+
     var courseName = '';
 
     for (var i = 0; i < courses.length; i++) {
@@ -864,15 +864,15 @@
     }
 
     var html = '<input type="hidden" name="module_id" value="' + module_id + '"><div class="form-group row"><label for="" class="col-sm-4">Country</label><div class="col-sm-6"><select class="form-control" name="country" required>' + countryName + '</select></div><div class="col-sm-2"><button type="button" class="btn btn-danger">New</button></div></div><div class="form-group row"><label for="" class="col-sm-4">Module Name</label><div class="col-sm-6"><input type="text" class="form-control" name="moduleName" value="' + modulename + '" required></div><div class="col-sm-2"><button type="button" class="btn btn-danger">New</button></div></div><div class="form-group row"><label for="" class="col-sm-4">Module Type</label><div class="col-sm-6"><select id="select_module_type_duplicate" class="form-control" name="moduleType" required>' + moduleType + '</select></div><div class="col-sm-2"><button type="button" class="btn btn-danger">New</button></div></div><div class="form-group row"><label for="" class="col-sm-4">Course Name</label><div class="col-sm-8"><select class="form-control" name="course_id" required>' + courseName + '</select></div></div><div class="form-group row"><label for="" class="col-sm-4">Grade/Year/Level</label><div class="col-sm-8"><select class="form-control" id="studentGrade" name="studentGrade">'+gradeAll+'</select></div></div><div class="form-group row d_subject"><label for="" class="col-sm-4"> Subject<span id="addNewSubject"><img src="assets/images/icon_new.png"> New </span></label><div class="col-sm-8"><select class="form-control" id="subject_id" name="subject">'+subjects_options+'</select></div></div><div class="form-group row d_chapter"><label for="" class="col-sm-4"> Chapter<span id="addNewChapter"><img src="assets/images/icon_new.png"> New </span></label><div class="col-sm-8"><select class="form-control" id="chapter_id" name="chapter">'+chapters_options+'</select></div></div><div class="form-group row"><label for="" class="col-sm-12"></label><div class="col-sm-6"><label class="checkbox-inline"><input type="checkbox" id="inlineCheckbox1" value="1" name="with_question"> Duplicate With Question</label></div><div class="col-sm-6"><label class="checkbox-inline"><input type="checkbox" id="inlineCheckbox2" value="1" name="without_question"> Without Question</label></div></div><div class="form-group row"><label for="" class="col-sm-12"></label><div class="col-sm-6 pull-right"><label class="checkbox-inline"><button type="button" class="btn btn-primary" id="duplicate">Duplicate</button></label></div></div>';
-    
+
     $('.module_duplicate_append').append(html);
 
     if(moduleTypeId==1){
       $('.d_subject').show();
-      $('.d_chapter').show(); 
+      $('.d_chapter').show();
     }else{
       $('.d_subject').hide();
-      $('.d_chapter').hide(); 
+      $('.d_chapter').hide();
     }
 
   });
@@ -881,22 +881,22 @@
      var mod_type = $(this).val();
      if(mod_type==1){
       $('.d_subject').show();
-      $('.d_chapter').show(); 
+      $('.d_chapter').show();
      }else{
       $('.d_subject').hide();
-      $('.d_chapter').hide(); 
+      $('.d_chapter').hide();
      }
   });
 //==================================
-  
+
 
   $(document).delegate('#addNewSubject', "click", function() {
     $("#addSubjectModal").modal('show');
   });
-  
+
   function saveSubject(){
       var subject_name = $('#subjectName').val();
-  
+
       if(subject_name != ''){
         $.ajax({
         url: 'Module/addNewSubject',
@@ -906,7 +906,7 @@
         },
         success: function(data) {
           var subject = JSON.parse(data);
-          
+
           var html = '<option class="subject'+subject['subject_id']+'" value="'+subject['subject_id']+'">'+subject['subject_name']+'</option>';
           $("#subject_id").append(html);
           $("#addSubjectModal").modal('hide');
@@ -924,7 +924,7 @@
     function saveChapter(){
       var chapter_name = $('#chapterName').val();
       var subject_id = $('#subject_id').val();
-   
+
       if(subject_id != ''){
       if(chapter_name != ''){
         $.ajax({
@@ -935,7 +935,7 @@
         },
         success: function(data) {
           var chapter = JSON.parse(data);
-          
+
           var html = '<option class="chapter'+chapter['id']+'" value="'+chapter['id']+'">'+chapter['chapterName']+'</option>';
           $("#chapter_id").append(html);
           $("#addChapterModal").modal('hide');
@@ -1040,7 +1040,7 @@
   $("#studentGrade").change(function() {
     individual_student();
   })
-  
+
   function individual_student() {
     var studentGrade = $("#studentGrade :selected").val();
     var subject = $("#subject").val();
@@ -1122,7 +1122,7 @@
 
   })
 
-  //module search 
+  //module search
   function moduleSearch() {
     var moduleName = $('#moduleName').val();
     var country = $('#moduleCountry :selected').val();

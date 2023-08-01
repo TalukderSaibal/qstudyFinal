@@ -177,6 +177,8 @@
     }
 </style>
 
+
+
 <?php
 // $answerCount = count(json_decode($question_info_s[0]['answer']));
 // echo "<pre>";print_r($question_info_s[0]);die();
@@ -224,7 +226,7 @@ $question_instruct = isset($question_info_s[0]['question_video']) ? json_decode(
 $question_instruct_id = $question_info_s[0]['id'];
 ?>
 <!--         ***** For Tutorial & Everyday Study *****         -->
-<?php // if ($module_type == 2 || $module_type == 1) { 
+<?php // if ($module_type == 2 || $module_type == 1) {
 ?>
 <input type="hidden" id="exam_end" value="" name="exam_end" />
 <input type="hidden" id="now" value="<?php echo $module_time; ?>" name="now" />
@@ -434,7 +436,7 @@ foreach ($total_question as $ind) { ?>
 </script>
 <?php $i = 1;
 foreach ($total_question as $indwww) {
-    $question_description = isset($indwww['questionDescription']) ? $indwww['questionDescription'] : ''; 
+    $question_description = isset($indwww['questionDescription']) ? $indwww['questionDescription'] : '';
     if($indwww['question_type'] == 22){
         $myquestion = json_decode($question_description);
         $question = $myquestion->question_setting_description;
@@ -585,7 +587,7 @@ foreach ($total_question as $indwww) {
             //         if (results == 3) {
             //             $('#times_up_message').modal('show');
             //             $('#question_reload').click(function () {
-            //                 location.reload(); 
+            //                 location.reload();
             //             });
 
             //         }

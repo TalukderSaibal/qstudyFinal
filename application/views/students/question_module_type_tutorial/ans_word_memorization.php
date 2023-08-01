@@ -86,6 +86,17 @@
     line-height: 158px;
   }
 
+  .play-button {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  cursor: pointer;
+  }
+  #gf{
+    width: 100px;
+  }
   .ques_solution {
     display: flex;
     padding: 9px 17px;
@@ -293,97 +304,99 @@
   }
 </style>
 
-<?php
-foreach ($total_question as $ind) {
 
-  if ($ind["question_type"] == 14) {
-    $chk = $ind["question_order"];
+
+<?php
+  foreach ($total_question as $ind) {
+
+    if ($ind["question_type"] == 14) {
+      $chk = $ind["question_order"];
+    }
   }
-}
 ?>
 
 <?php
 
-$answerCount = count(json_decode($question_info_s[0]['answer']));
-// echo "<pre>";print_r($answerCount);die();
+  $answerCount = count(json_decode($question_info_s[0]['answer']));
+  // echo "<pre>";print_r($answerCount);die();
 
-$question_order_array = array_column($total_question, 'question_order');
-$last_question_order = end($question_order_array);
+  $question_order_array = array_column($total_question, 'question_order');
+  $last_question_order = end($question_order_array);
 
-$key = $question_info_s[0]['question_order'];
-date_default_timezone_set($this->site_user_data['zone_name']);
-$module_time = time();
+  $key = $question_info_s[0]['question_order'];
+  date_default_timezone_set($this->site_user_data['zone_name']);
+  $module_time = time();
 
-if ($tutorial_ans_info) {
-  $temp_table_ans_info = json_decode($tutorial_ans_info[0]['st_ans'], true);
-  $desired = $temp_table_ans_info;
-} else {
-  $desired = $this->session->userdata('data');
-}
-
-// Question Time
-
-$question_time = explode(':', $question_info_s[0]['questionTime']);
-$hour = 0;
-$minute = 0;
-$second = 0;
-if (is_numeric($question_time[0])) {
-  $hour = $question_time[0];
-}
-if (is_numeric($question_time[1])) {
-  $minute = $question_time[1];
-}
-if (is_numeric($question_time[2])) {
-  $second = $question_time[2];
-}
-
-$question_time_in_second = 0;
-$question_time_in_second = ($hour * 3600) + ($minute * 60) + $second;
-$moduleOptionalTime = 0;
-if ($question_info_s[0]['moduleType'] == 2 && $question_info_s[0]['optionalTime'] != 0) {
-  $moduleOptionalTime = $question_info_s[0]['optionalTime'];
-}
-
-$passTime = time() - $_SESSION['exam_start'];
-$setTime = 0;
-if ($moduleOptionalTime <= 0) {
-  if ($question_time_in_second > 0) {
-    $setTime = $question_time_in_second;
-  }
-} else {
-  $moduleOptionalTime = $moduleOptionalTime - $passTime;
-  if ($question_time_in_second <= 0) {
-    $setTime = $moduleOptionalTime;
+  if ($tutorial_ans_info) {
+    $temp_table_ans_info = json_decode($tutorial_ans_info[0]['st_ans'], true);
+    $desired = $temp_table_ans_info;
   } else {
-    if ($question_time_in_second > $moduleOptionalTime) {
-      $setTime = $moduleOptionalTime;
-    } else {
+    $desired = $this->session->userdata('data');
+  }
+
+  // Question Time
+
+  $question_time = explode(':', $question_info_s[0]['questionTime']);
+  $hour = 0;
+  $minute = 0;
+  $second = 0;
+  if (is_numeric($question_time[0])) {
+    $hour = $question_time[0];
+  }
+  if (is_numeric($question_time[1])) {
+    $minute = $question_time[1];
+  }
+  if (is_numeric($question_time[2])) {
+    $second = $question_time[2];
+  }
+
+  $question_time_in_second = 0;
+  $question_time_in_second = ($hour * 3600) + ($minute * 60) + $second;
+  $moduleOptionalTime = 0;
+  if ($question_info_s[0]['moduleType'] == 2 && $question_info_s[0]['optionalTime'] != 0) {
+    $moduleOptionalTime = $question_info_s[0]['optionalTime'];
+  }
+
+  $passTime = time() - $_SESSION['exam_start'];
+  $setTime = 0;
+  if ($moduleOptionalTime <= 0) {
+    if ($question_time_in_second > 0) {
       $setTime = $question_time_in_second;
     }
+  } else {
+    $moduleOptionalTime = $moduleOptionalTime - $passTime;
+    if ($question_time_in_second <= 0) {
+      $setTime = $moduleOptionalTime;
+    } else {
+      if ($question_time_in_second > $moduleOptionalTime) {
+        $setTime = $moduleOptionalTime;
+      } else {
+        $setTime = $question_time_in_second;
+      }
+    }
   }
-}
 
-// End Question Time
+  // End Question Time
 
-$link_next = "javascript:void(0);";
-$link = "javascript:void(0);";
+  $link_next = "javascript:void(0);";
+  $link = "javascript:void(0);";
 
-if (is_array($desired)) {
-  $link_key = $key - 1;
-  if (array_key_exists($link_key, $desired)) {
-    $link = $desired[$link_key]['link'];
+  if (is_array($desired)) {
+    $link_key = $key - 1;
+    if (array_key_exists($link_key, $desired)) {
+      $link = $desired[$link_key]['link'];
+    }
+    $link_key_next = $key;
+    if (array_key_exists($link_key_next, $desired)) {
+      $question_id = $question_info_s[0]['question_order'] + 1;
+      $link1 = base_url();
+      $link_next = $link1 . 'get_tutor_tutorial_module/' . $question_info_s[0]['module_id'] . '/' . $question_id;
+    }
   }
-  $link_key_next = $key;
-  if (array_key_exists($link_key_next, $desired)) {
-    $question_id = $question_info_s[0]['question_order'] + 1;
-    $link1 = base_url();
-    $link_next = $link1 . 'get_tutor_tutorial_module/' . $question_info_s[0]['module_id'] . '/' . $question_id;
-  }
-}
 
-$module_type = $question_info_s[0]['moduleType'];
+  $module_type = $question_info_s[0]['moduleType'];
 
-$videoName = strlen($module_info[0]['video_name']) > 1 ? $module_info[0]['video_name'] : 'Subject Video';
+  $videoName = strlen($module_info[0]['video_name']) > 1 ? $module_info[0]['video_name'] : 'Subject Video';
 ?>
 
 
@@ -473,7 +486,7 @@ $videoName = strlen($module_info[0]['video_name']) > 1 ? $module_info[0]['video_
         <form id="answer_form">
 
           <input type="hidden" value="<?php echo $question_info_s[0]['question_id']; ?>" name="id" id="question_id">
-          <?php // if (array_key_exists($key, $total_question) && !$tutorial_ans_info) { 
+          <?php // if (array_key_exists($key, $total_question) && !$tutorial_ans_info) {
           ?>
           <?php if (($last_question_order != $key) && !$tutorial_ans_info) { ?>
             <input type="hidden" id="next_question" value="<?php echo $question_info_s[0]['question_order'] + 1; ?>" name="next_question" />
@@ -495,7 +508,7 @@ $videoName = strlen($module_info[0]['video_name']) > 1 ? $module_info[0]['video_
                     <!-- <a style="cursor: pointer;">
                               <span style="color: white;" class=" qstudy_Instruction_click">
                                 <img src="assets/images/icon_draw.png" ><b> Instruction</b>
-                              </span> 
+                              </span>
                             </a> -->
                     <div class="workout_menu" style=" padding-right: 15px;">
                       <ul>
@@ -686,7 +699,7 @@ $videoName = strlen($module_info[0]['video_name']) > 1 ? $module_info[0]['video_
                   </div>
 
                   <div class="col-sm-5"></div>
-                  <!-- <div class="col-sm-4" style="margin-top: 10px;">   
+                  <!-- <div class="col-sm-4" style="margin-top: 10px;">
                                 <button type="button" class="btn btn_next" id="answer_matching">submit</button>
                             </div>                     -->
                   <div class="col-sm-4"></div>
@@ -812,11 +825,11 @@ $videoName = strlen($module_info[0]['video_name']) > 1 ? $module_info[0]['video_
                                 </td>
                                 <td>
                                   <div class="description_video">
-                                  <?php 
+                                  <?php
                                     // var_dump($ind[0]['questionDescription']);
                                     // echo var_dump($ind['questionDescription']);
 
-                                    $question_description = isset($ind['questionDescription']) ? $ind['questionDescription'] : ''; 
+                                    $question_description = isset($ind['questionDescription']) ? $ind['questionDescription'] : '';
                                     if($ind['question_type'] == 22){
                                       $myquestion = json_decode($question_description);
                                       $question = $myquestion->question_setting_description;
@@ -898,10 +911,14 @@ foreach ($total_question as $ind) {
               // echo "<pre>"; print_r($question_instruct_vid); die();
             ?>
             <?php if (isset($question_instruct_vid[0]) && $question_instruct_vid[0] != null) { ?>
-              
+
               <video controls style="width: 100%" id="videoTag<?php echo $i; ?>">
                 <source src="<?php echo isset($question_instruct_vid[0]) ? trim($question_instruct_vid[0]) : '';?>" type="video/mp4">
               </video>
+
+              <div id="playButton<?php echo $i; ?>" class="play-button">
+                  <img id="gf" src="assets/images/playButton.png" alt="Play Button">
+              </div>
 
               <?php if (isset($question_instruct_vid[1]) && $question_instruct_vid[1] != null) : ?>
                 <img class="active_video_play" src="assets/images/video_icon.PNG">
@@ -1000,14 +1017,14 @@ foreach ($total_question as $ind) {
 <?php $i = 1;
 foreach ($total_question as $indwww) {
 
-  $question_description = isset($indwww['questionDescription']) ? $indwww['questionDescription'] : ''; 
+  $question_description = isset($indwww['questionDescription']) ? $indwww['questionDescription'] : '';
   if($indwww['question_type'] == 22){
     $myquestion = json_decode($question_description);
     $question = $myquestion->question_setting_description;
   }else{
     $question = $question_description;
   }
-  
+
   ?>
   <div class="modal fade ss_modal ew_ss_modal" id="show_description_<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -1161,6 +1178,60 @@ foreach ($total_question as $indwww) {
       video.pause();
     }
   }
+
+  function videoCloseWithModal1(id,playButton){
+    $('#ss_question_video' + id).modal('show');
+    var video = $('#videoTag' + id).get(0);
+
+    if (video.paused === false) {
+      video.pause();
+      alert('ok');
+      playButton.show();
+    } else{
+      video.play();
+      playButton.hide();
+    }
+  }
+
+
+  // Attach event listeners to the play button
+  $('.play-button').click(function() {
+    $('#ss_question_video' + id).modal('show');
+    var id = $(this).attr('id').replace('playButton', '');
+    var playButton = $('#playButton' + id);
+    var video = $('#videoTag' + id).get(0);
+
+    videoCloseWithModal1(id,playButton);
+
+    if (video.paused === false) {
+        video.pause();
+        playButton.show();
+    } else {
+        video.play();
+        playButton.hide();
+    }
+    playButton.toggle();
+  });
+
+
+  $('.play-button').click(function() {
+    var video = $(this).siblings('video')[0];
+
+    if (video.paused) {
+      video.play();
+      $(this).hide();
+    } else {
+      video.pause();
+    }
+  });
+
+  $('video').on('play', function() {
+    $(this).siblings('.play-button').hide();
+  });
+
+  $('video').on('pause', function() {
+    $(this).siblings('.play-button').show();
+  });
 
   $(document).ready(function() {
     $('#ans_submit').hide();
@@ -1406,7 +1477,7 @@ foreach ($total_question as $indwww) {
     //  alert(opt);
     // if(opt > total){
     //   remaining_time = total;
-    // }else{  
+    // }else{
     //   remaining_time = parseInt(end_depend_optional) - parseInt(now);
     // }
 
