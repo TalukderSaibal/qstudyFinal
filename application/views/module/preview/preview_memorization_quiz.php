@@ -51,7 +51,20 @@ $question_instruct_id = $question_info_s[0]['id'];
         font-weight: bold;
         color: orange;
     }
+
+    .play-button {
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        cursor: pointer;
+    }
+    #gf{
+        width: 100px;
+    }
 </style>
+
 <style>
     .ui_select {
         min-height: 30px;
@@ -145,6 +158,7 @@ $question_instruct_id = $question_info_s[0]['id'];
         color: #fff;
     }
 </style>
+
 <input type="hidden" id="exam_end" value="" name="exam_end" />
 <input type="hidden" id="now" value="<?php echo $module_time; ?>" name="now" />
 <input type="hidden" id="optionalTime" value="<?php echo $question_time_in_second; ?>" name="optionalTime" />
@@ -644,8 +658,8 @@ $question_instruct_id = $question_info_s[0]['id'];
                                                                 <td><?php echo $ind['questionMarks']; ?></td>
                                                                 <td>
                                                                     <div class="description_video">
-                                                                        <?php 
-                                                                        $question_description = isset($ind['questionDescription']) ? $ind['questionDescription'] : ''; 
+                                                                        <?php
+                                                                        $question_description = isset($ind['questionDescription']) ? $ind['questionDescription'] : '';
                                                                         if($ind['question_type'] == 22){
                                                                             $myquestion = json_decode($question_description);
                                                                             $question = $myquestion->question_setting_description;
@@ -797,6 +811,11 @@ foreach ($total_question as $ind) { ?>
                         <video controls style="width: 100%" id="videoTag<?php echo $i; ?>">
                             <source src="<?php echo isset($question_instruct_vid[0]) ? trim($question_instruct_vid[0]) : ''; ?>" type="video/mp4">
                         </video>
+
+                        <div id="playButton<?php echo $i; ?>" class="play-button">
+                            <img id="gf" src="assets/images/playButton.png" alt="Play Button">
+                        </div>
+
                         <?php if (isset($question_instruct_vid[1]) && $question_instruct_vid[1] != null) : ?>
 
                             <video controls style="width: 100%" id="videoTag<?php echo $i; ?>">
@@ -818,7 +837,7 @@ foreach ($total_question as $ind) { ?>
 
 <?php $i = 1;
 foreach ($total_question as $ind) {
-    $question_description = isset($ind['questionDescription']) ? $ind['questionDescription'] : ''; 
+    $question_description = isset($ind['questionDescription']) ? $ind['questionDescription'] : '';
     if($ind['question_type'] == 22){
         $myquestion = json_decode($question_description);
         $question = $myquestion->question_setting_description;
@@ -856,7 +875,7 @@ foreach ($total_question as $ind) {
             <div class="modal-body row">
                 <i class="fa fa-close" style="font-size:20px;color:red"></i> <span class="ss_extar_top20">Your answer is wrong</span>
                 <br>
-                <!--                --><?php //echo strip_tags($question_info_s[0]['answer']); 
+                <!--                --><?php //echo strip_tags($question_info_s[0]['answer']);
                                         ?>
                 <div class="question_content" style="width:100%;padding: 10px;margin-top: 20px;">
                     <div>
@@ -904,6 +923,60 @@ foreach ($total_question as $ind) {
             video.pause();
         }
     }
+
+    function videoCloseWithModal1(id,playButton){
+    $('#ss_question_video' + id).modal('show');
+    var video = $('#videoTag' + id).get(0);
+
+    if (video.paused === false) {
+      video.pause();
+      alert('ok');
+      playButton.show();
+    } else{
+      video.play();
+      playButton.hide();
+    }
+  }
+
+
+  // Attach event listeners to the play button
+  $('.play-button').click(function() {
+    $('#ss_question_video' + id).modal('show');
+    var id = $(this).attr('id').replace('playButton', '');
+    var playButton = $('#playButton' + id);
+    var video = $('#videoTag' + id).get(0);
+
+    videoCloseWithModal1(id,playButton);
+
+    if (video.paused === false) {
+        video.pause();
+        playButton.show();
+    } else {
+        video.play();
+        playButton.hide();
+    }
+    playButton.toggle();
+  });
+
+
+  $('.play-button').click(function() {
+    var video = $(this).siblings('video')[0];
+
+    if (video.paused) {
+      video.play();
+      $(this).hide();
+    } else {
+      video.pause();
+    }
+  });
+
+  $('video').on('play', function() {
+    $(this).siblings('.play-button').hide();
+  });
+
+  $('video').on('pause', function() {
+    $(this).siblings('.play-button').show();
+  });
 
     function showModalDes(e) {
         $('#show_description_' + e).modal('show');

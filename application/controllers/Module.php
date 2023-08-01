@@ -1276,7 +1276,7 @@ public function renderReorderModule($modules = [])
                 $data['assignment_list'] = renderAssignmentTasks($items);
                 $data['maincontent']     = $this->load->view('module/preview/assignment', $data, true);
             } elseif ($data['question_info_s'][0]['questionType'] == 9) {
-                 $_SESSION['q_order_2'] = $this->uri->segment('3');
+                $_SESSION['q_order_2'] = $this->uri->segment('3');
 
                 $info = array();
                 $titles = array();
@@ -1288,6 +1288,7 @@ public function renderReorderModule($modules = [])
                     $title[1] = json_decode($data['question_info_s'][0]['questionName'])->wrongTitlesIncrement[$key];
                     $titles[] = $title;
                 }
+
                 $title[0] = json_decode($data['question_info_s'][0]['questionName'])->rightTitle;
                 $title[1] = "right_ones_xxx";
                 $titles[] = $title;
@@ -1414,8 +1415,8 @@ public function renderReorderModule($modules = [])
                 }
                 $data['maincontent'] = $this->load->view('module/preview/preview_workout_quiz_two', $data, true);
 
-            }elseif ($data['question_info_s'][0]['questionType'] == 16)
-            {
+            }elseif ($data['question_info_s'][0]['questionType'] == 16){
+
                 $data['question_item']=$data['question_info_s'][0]['questionType'];
                 $data['question_info'] = json_decode($data['question_info_s'][0]['questionName']);
                 $data['question_info_ind'] = $data['question_info'];
@@ -3597,6 +3598,7 @@ public function renderReorderModule($modules = [])
 
         $data['all_subject']        = $this->tutor_model->getInfo('tbl_subject', 'created_by', $user_id);
         $data['all_course']        = $this->Admin_model->search('tbl_course', [1 => 1]);
+
         // $data['allRenderedModType'] = $this->renderAllModuleType();
         // echo "<pre>";print_r($data['all_course']);die();
 

@@ -1,52 +1,52 @@
 <?php
-$school = $user_info[0]['parent_id'];
-if (isset($school) && !empty($school)) {
-    $school_name = $this->db->where('id',$school)->get('tbl_useraccount')->row('name');
-    // echo $school_name;die();
-}
+    $school = $user_info[0]['parent_id'];
+    if (isset($school) && !empty($school)) {
+        $school_name = $this->db->where('id',$school)->get('tbl_useraccount')->row('name');
+        // echo $school_name;die();
+    }
 
-if ( $user_info[0]['subscription_type'] == "direct_deposite" && $user_info[0]['direct_deposite'] == 0 ){
+    if ( $user_info[0]['subscription_type'] == "direct_deposite" && $user_info[0]['direct_deposite'] == 0 ){
+        $notComplete = 1;
+    }
+
+    if($checkDirectDepositPendingCourse > 0 && $checkRegisterCourses == 0){
     $notComplete = 1;
-}     
-
-if($checkDirectDepositPendingCourse > 0 && $checkRegisterCourses == 0){
-   $notComplete = 1; 
-}
+    }
 
 ?>
-  
+
 
 <?php if (isset($notComplete)): ?>
 
- <div style="margin: 10px 25px;" >
-    <img src="assets/images/rsz_59.jpg" class="img-responsive"> <br>
-    <span style="color: red;"> Your subscriptions is pending . As soon as received the payment it will active. </span>
-</div>  
-
-<div class="row">
-    <div class="">
-
-        <ul class="personal_ul">
-            <?php if ($user_info[0]['subscription_type'] == 'data_input') { ?>
-                <li class="presonal2" id="inbox"><a >Inbox</a></li>
-            <?php  }else{ ?>
-                <li class="presonal"><a href="<?php echo base_url();?>">Personal</a></li>
-                <li class="presonal2"><a href="">View Progress</a></li>
-            <?php  } ?>
-            <li class="presonal2"><a href="">Course</a></li>
-            
-            <li class="presonal2" style="padding: 3px 19px;cursor: pointer;border:none;background:none;"><a href="<?php echo base_url();?>select_course"> 
-                <u><span>Buy Now</span><br><br><span> Add Course</span></u>
-                <img src="<?= base_url('/assets/images/product/juri.PNG') ?>" style="height: 40px;"></a>
-            </li>
-        </ul>
-
-        <div>
-            <img style="margin:20px auto;" src="assets/images/personal_n1.png" class="img-responsive">
-        </div>
-
+    <div style="margin: 10px 25px;" >
+        <img src="assets/images/rsz_59.jpg" class="img-responsive"> <br>
+        <span style="color: red;"> Your subscriptions is pending . As soon as received the payment it will active. </span>
     </div>
-</div>
+
+    <div class="row">
+        <div class="">
+
+            <ul class="personal_ul">
+                <?php if ($user_info[0]['subscription_type'] == 'data_input') { ?>
+                    <li class="presonal2" id="inbox"><a >Inbox</a></li>
+                <?php  }else{ ?>
+                    <li class="presonal"><a href="<?php echo base_url();?>">Personal</a></li>
+                    <li class="presonal2"><a href="">View Progress</a></li>
+                <?php  } ?>
+                <li class="presonal2"><a href="">Course</a></li>
+
+                <li class="presonal2" style="padding: 3px 19px;cursor: pointer;border:none;background:none;"><a href="<?php echo base_url();?>select_course">
+                    <u><span>Buy Now</span><br><br><span> Add Course</span></u>
+                    <img src="<?= base_url('/assets/images/product/juri.PNG') ?>" style="height: 40px;"></a>
+                </li>
+            </ul>
+
+            <div>
+                <img style="margin:20px auto;" src="assets/images/personal_n1.png" class="img-responsive">
+            </div>
+
+        </div>
+    </div>
 <?php endif ?>
 
 <?php if (!isset($notComplete)): ?>
@@ -55,7 +55,7 @@ if($checkDirectDepositPendingCourse > 0 && $checkRegisterCourses == 0){
 <?php if ($user_info[0]['suspension_status'] == 1){ ?>
     <div class="row">
         <div class="col-md-7" id="message_denied">
-            <p class="alert alert-success"  style="width: 90%"> 
+            <p class="alert alert-success"  style="width: 90%">
                 <b> Your registration has suspend. Please contact with Q-study</b>
             </p>
         </div>
@@ -93,7 +93,7 @@ if($checkDirectDepositPendingCourse > 0 && $checkRegisterCourses == 0){
             <?php  } ?>
             <li class="presonal2" style="background: #fff !important;border:1px solid #d4b1b1!important;"><a href="<?= ($inactive_user_check < 1)?'view-course':''?>">Course</a></li>
             <!-- shvou -->
-            <?php 
+            <?php
                 if ($user_info[0]['subscription_type'] =="trial") {
                     $createAt = $user_info[0]['created'];
                     $this->load->helper('commonmethods_helper');
@@ -102,43 +102,43 @@ if($checkDirectDepositPendingCourse > 0 && $checkRegisterCourses == 0){
                 }
                 if (isset($days)): ?>
                 <?php if ($days < 1): ?>
-                    <li class="presonal2" style="background: #eadddd !important;"><a href="<?php echo base_url();?>select_course"> 
+                    <li class="presonal2" style="background: #eadddd !important;"><a href="<?php echo base_url();?>select_course">
                         Active Subcription
-                    </li> 
+                    </li>
                 <?php endif ?>
                 <?php if ($days > 0): ?>
-                    <li class="presonal2" style="padding: 3px 19px;cursor: pointer;border:none;background:none;"><a href="<?php echo base_url();?>select_course"> 
+                    <li class="presonal2" style="padding: 3px 19px;cursor: pointer;border:none;background:none;"><a href="<?php echo base_url();?>select_course">
                         <u><span>Buy Now</span><br><br><span> Add Course</span></u>
                         <img src="<?= base_url('/assets/images/product/juri.PNG') ?>" style="height: 40px;"></a>
                     </li>
                 <?php endif ?>
             <?php endif ?>
 
-            <?php 
+            <?php
                 $end_subscription = $user_info[0]['end_subscription'];
-                 if (isset($end_subscription)) {
-                     $d1 = date('Y-m-d',strtotime($end_subscription));
-                     $d2 = date('Y-m-d');
-                 }
+                if (isset($end_subscription)) {
+                    $d1 = date('Y-m-d',strtotime($end_subscription));
+                    $d2 = date('Y-m-d');
+                }
                 if (isset($end_subscription) && $end_subscription != null): ?>
                 <?php if (($d1 > $d2) && $user_info[0]['payment_status'] != "Cancel"){ ?>
-                    
-                    <li class="presonal2" style="background: #d63832 !important;"><a data-toggle="modal" data-target="#subscriptions_cancel" style="cursor: pointer;color: #fff !important;"> 
+
+                    <li class="presonal2" style="background: #d63832 !important;"><a data-toggle="modal" data-target="#subscriptions_cancel" style="cursor: pointer;color: #fff !important;">
                         Cancel Subcription
-                    </a></li>  
-                    
-                    <li class="presonal2" style="padding: 3px 19px;cursor: pointer;border:none;background:none;"><a href="<?php echo base_url();?>select_course"> 
+                    </a></li>
+
+                    <li class="presonal2" style="padding: 3px 19px;cursor: pointer;border:none;background:none;"><a href="<?php echo base_url();?>select_course">
                         <u><span>Buy Now</span><br><br><span> Add Course</span></u>
                         <img src="<?= base_url('/assets/images/product/juri.PNG') ?>" style="height: 40px;"></a>
                     </li>
                  <?php }else if(($d1 < $d2 && $user_info[0]['payment_status'] != "Cancel")){ ?>
-                    <li class="presonal2" style="background: #eadddd !important;"><a href="<?php echo base_url();?>select_course"> 
+                    <li class="presonal2" style="background: #eadddd !important;"><a href="<?php echo base_url();?>select_course">
                         Active Subcription
-                    </li> 
+                    </li>
                 <?php }else{ ?>
                     <li class="presonal2" style="background: #eadddd !important;"><a  data-toggle="modal" data-target="#subscriptions_active" style="cursor: pointer;">
                         Active Subcription</a>
-                    </li> 
+                    </li>
                 <?php }?>
             <?php endif ?>
         </ul>
@@ -177,7 +177,7 @@ if($checkDirectDepositPendingCourse > 0 && $checkRegisterCourses == 0){
 </div>
 
 
-<?php 
+<?php
     $end_subscription = $user_info[0]['end_subscription'];
     if (isset($end_subscription)) {
         $d1 = date('Y-m-d',strtotime($end_subscription));
@@ -194,9 +194,9 @@ if($checkDirectDepositPendingCourse > 0 && $checkRegisterCourses == 0){
 		<p class="modal-title" id="exampleModalLabel" style="padding: 5px;font-size: 20px;font-weight: bold;">Cancel Subscription?</p>
         <p style="font-weight: 500;padding: 5px;">
         Your subscription will be cancel at the end of your belling period. After <b><u><?= (isset($r_days))?$r_days:'';?></u></b> days your subscription will end no payment will be taken.<br> Change your mind any time before this date.</p>
-            
+
       </div>
-      
+
     <div class="modal-footer" style="border-bottom: 1px solid #e5e5e5;border-top:none;margin-bottom: 20px;padding: 15px 50px;">
         <button type="button" class="btn btn-danger" id="cancel_subscription_form">Cancel Subscription</button>
         <button type="button" class="btn btn-primary" data-dismiss="modal">Keep Subscription</button>
@@ -254,7 +254,7 @@ if($checkDirectDepositPendingCourse > 0 && $checkRegisterCourses == 0){
         })
 
         $("#question_form").on('submit', function(e){
-            
+
           e.preventDefault();
 
           var pathname = '<?php echo base_url(); ?>';
@@ -274,7 +274,7 @@ if($checkDirectDepositPendingCourse > 0 && $checkRegisterCourses == 0){
               var data = jQuery.parseJSON(response);
 
               alert('Added Successfully');
-              
+
               $("#error_msg").text('');
               if(data.flag == 1){
                 $("#preview_btn").show();
@@ -311,8 +311,8 @@ if($checkDirectDepositPendingCourse > 0 && $checkRegisterCourses == 0){
                 { name: 'wiris', items: [ 'ckeditor_wiris_formulaEditor', 'ckeditor_wiris_formulaEditorChemistry'] }
             ]
         });
-        
-        
+
+
     });
 </script>
 <script type="text/javascript">

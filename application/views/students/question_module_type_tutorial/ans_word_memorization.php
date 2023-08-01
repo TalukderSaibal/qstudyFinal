@@ -1233,6 +1233,8 @@ foreach ($total_question as $indwww) {
     $(this).siblings('.play-button').show();
   });
 
+  
+
   $(document).ready(function() {
     $('#ans_submit').hide();
     $('#ans_next').click(function() {

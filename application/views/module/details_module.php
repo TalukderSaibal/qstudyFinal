@@ -634,16 +634,16 @@
               // alert(url);
 
               if(chk_grade!=modules[i].studentGrade){
-                 chk_grade=modules[i].studentGrade;
-                 part_change = 1;
+                  chk_grade=modules[i].studentGrade;
+                  part_change = 1;
               }
               if(chk_moduleType!=modules[i].moduleType){
-                 chk_moduleType=modules[i].moduleType;
-                 part_change = 1;
+                  chk_moduleType=modules[i].moduleType;
+                  part_change = 1;
               }
               if(chk_courseId!=modules[i].course_id){
-                 chk_courseId=modules[i].course_id;
-                 part_change = 1;
+                  chk_courseId=modules[i].course_id;
+                  part_change = 1;
               }
               if(part_change==1){
                 part_color_class = 'change_part_color';

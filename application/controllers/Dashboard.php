@@ -13,7 +13,7 @@ class Dashboard extends CI_Controller
             redirect('welcome');
         }
     }
-    
+
 
     public function index()
     {
@@ -44,33 +44,33 @@ class Dashboard extends CI_Controller
             redirect('admin');
         }
     }
-    
+
     public function cancel_subscription()
     {
         $data['user_id'] = $this->session->userdata('user_id');
-        
+
         $data['page_title'] = '.:: Q-Study :: Tutor yourself...';
         $data['headerlink'] = $this->load->view('dashboard_template/headerlink', $data, true);
         $data['header'] = $this->load->view('dashboard_template/header', $data, true);
         $data['footerlink'] = $this->load->view('dashboard_template/footerlink', $data, true);
-        
+
         $data['maincontent'] = $this->load->view('cancel_subscription', $data, true);
         $this->load->view('master_dashboard', $data);
     }
-    
+
     public function cancel_confirm()
     {
         $data['user_id'] = $this->session->userdata('user_id');
-        
+
         $data['page_title'] = '.:: Q-Study :: Tutor yourself...';
         $data['headerlink'] = $this->load->view('dashboard_template/headerlink', $data, true);
         $data['header'] = $this->load->view('dashboard_template/header', $data, true);
         $data['footerlink'] = $this->load->view('dashboard_template/footerlink', $data, true);
-        
+
         $data['maincontent'] = $this->load->view('cancel_confirm', $data, true);
         $this->load->view('master_dashboard', $data);
     }
-    
+
     public function view_course()
     {
         if ($this->session->userdata('userType') == 3 ||
@@ -89,7 +89,7 @@ class Dashboard extends CI_Controller
     }
 
 
-    // added AS 
+    // added AS
     public function subscription_cancel(){
         $id = $this->session->userdata('user_id');
         $user = $this->db->where('id',$id)->get('tbl_useraccount')->row();
@@ -104,7 +104,7 @@ class Dashboard extends CI_Controller
         $check_user = $this->db->where('user_id',$data['user_id'])->get('tbl_cancel_subscription')->result_array();
         if (count($check_user) == 0) {
             $result = $this->db->insert('tbl_cancel_subscription',$data);
-           
+
         }else{
             $result = $this->db->update('tbl_cancel_subscription',$data);
 

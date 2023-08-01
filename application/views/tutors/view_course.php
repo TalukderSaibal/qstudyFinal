@@ -1,20 +1,20 @@
-  <!--  Groupboard --> 
- <?php
-  if (isset($ck_schl_corporate_exist)) {
-     $whiteboard_id = $ck_schl_corporate_exist[0]['whiteboar_id'];
- }else{
-    $whiteboard_id = $user_info[0]['whiteboar_id'];
- }
+<!--  Groupboard -->
+<?php
+    if (isset($ck_schl_corporate_exist)) {
+        $whiteboard_id = $ck_schl_corporate_exist[0]['whiteboar_id'];
+    }else{
+        $whiteboard_id = $user_info[0]['whiteboar_id'];
+    }
 
 ?>
 
 <div class="row">
     <div class="">
 
-        <p class="alert alert-success" id="whiteboard_denied" style="margin: 0 31%;display: none;"  > 
+        <p class="alert alert-success" id="whiteboard_denied" style="margin: 0 31%;display: none;"  >
             <b> Sorry! You did not purchase whiteboard </b>
         </p>
-		<p class="alert alert-success" id="school_corporate_message" style="margin: 0 31%;display: none;"  > 
+		<p class="alert alert-success" id="school_corporate_message" style="margin: 0 31%;display: none;"  >
             <b> Sorry! Your tutor only assign question & module </b>
         </p>
 
@@ -27,7 +27,7 @@
             	<li class="presonal2"><a href="details-module">Module/Event</a></li>
                 <li class="presonal2"><a href="Tutor/studyType">Q-study</a></li>
         	<?php } ?>
-			
+
             <?php if (isset($user_type) && $user_type == 7){
                 // if($this->session->userdata('selCountry')!=1){
                 //     ?>
@@ -37,12 +37,12 @@
                 <?php }else{?>
 
             <li class="presonal4">
-                <!--  Groupboard --> 
-                <!-- <a onclick="permit_whiteboard('<?= $whiteboard_id; ?>')" style="cursor: pointer;" > 
+                <!--  Groupboard -->
+                <!-- <a onclick="permit_whiteboard('<?= $whiteboard_id; ?>')" style="cursor: pointer;" >
                     <h5 style="font-size:18px;color: #114963;">Whiteboard</h5>
                     <img src="<?= base_url('/assets/images/icon_w_board.png') ?>"  height="40">
                 </a> -->
-                <a onclick="permit_whiteboard(1)" style="cursor: pointer;" > 
+                <a onclick="permit_whiteboard(1)" style="cursor: pointer;" >
                     <h5 style="font-size:18px;color: #114963;">Whiteboard</h5>
                     <img src="<?= base_url('/assets/images/icon_w_board.png') ?>"  height="40">
                 </a>
@@ -59,7 +59,7 @@
     </div>
 </div>
 
-<!--  Groupboard --> 
+<!--  Groupboard -->
 <script type="text/javascript">
     function permit_whiteboard(argument) {
         if (argument  == 0 ) {
@@ -71,7 +71,7 @@
             window.location.href = base_url;
         }
     }
-	
+
 	$(".school_corporate_msg").click(function(){
 		 $("#school_corporate_message").show();
          $("#school_corporate_message").fadeOut( 10000 );
