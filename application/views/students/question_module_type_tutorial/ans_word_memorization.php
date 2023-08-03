@@ -1234,6 +1234,7 @@ foreach ($total_question as $indwww) {
   });
 
   
+  
 
   $(document).ready(function() {
     $('#ans_submit').hide();

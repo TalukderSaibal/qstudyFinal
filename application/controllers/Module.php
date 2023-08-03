@@ -3454,8 +3454,7 @@ public function renderReorderModule($modules = [])
         $data['maincontent'] = $this->load->view('module/tutor_list', $data, true);
         $this->load->view('master_dashboard', $data);
     }
-    public function createModule($id="")
-    {
+    public function createModule($id=""){
 
         if(empty($id)){
             $this->db->truncate('tbl_pre_module_temp');
@@ -3468,6 +3467,7 @@ public function renderReorderModule($modules = [])
 
             $this->session->set_userdata('module_info_creadiential', $module_info);
         }
+
         $this->session->unset_userdata('module_status');
         $this->session->unset_userdata('module_edit_id');
         $this->session->unset_userdata('param_module_id');
@@ -4428,8 +4428,7 @@ public function renderReorderModule($modules = [])
         // die();
     }
 
-    public function newEditModule($moduleId,$id="")
-    {
+    public function newEditModule($moduleId,$id=""){
         $this->session->unset_userdata('module_edit_status');
         $this->session->unset_userdata('module_status_edit_id');
         $this->session->unset_userdata('module_status');
